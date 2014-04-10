@@ -1,5 +1,6 @@
 package com.etaoshi.spider.job;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -11,7 +12,6 @@ import java.util.Properties;
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
-
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -126,13 +126,17 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 	 * @throws SQLException 
 	 * @throws SchedulerException 
 	 * @throws ParseException 
+	 * @throws IOException 
 	 */
-	public void Start() throws SQLException, SchedulerException, ParseException {
+	public void Start() throws SQLException, SchedulerException, ParseException, IOException {
 		logger.error("\r\n调度器开始启动...\r\n");
 		//设定调度器
 		Properties prop = new Properties();
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("quartz.properties");
-    	SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+		prop.load(is);
+    	//SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+		StdSchedulerFactory schedulerFactory = new StdSchedulerFactory();
+    	schedulerFactory.initialize(prop);
     	scheduler = schedulerFactory.getScheduler();
 		
 		//首先获取统计源
@@ -375,6 +379,8 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 		} catch (SchedulerException e) {
 			logger.error(e.getStackTrace());
 		} catch (ParseException e) {
+			logger.error(e.getStackTrace());
+		} catch (IOException e) {
 			logger.error(e.getStackTrace());
 		}
 	}
