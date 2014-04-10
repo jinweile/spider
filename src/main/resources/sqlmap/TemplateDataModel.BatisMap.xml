@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="TemplateDataModel">
+
+	<typeAlias alias="TemplateDataModel" type="com.etaoshi.spider.model.TemplateDataModel" />
+
+	<resultMap id="TemplateDataModel-FullResultMap" class="TemplateDataModel">
+		<result property="id" column="id"/>
+		<result property="templateid" column="templateid"/>
+		<result property="datamodelid" column="datamodelid"/>
+	</resultMap>
+
+	<select id="TemplateDataModel-GetCount" resultClass="Integer">
+		SELECT count(1) FROM TemplateDataModel
+	</select>
+	
+	<select id="TemplateDataModel-FindAll" resultMap="TemplateDataModel-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, datamodelid
+		FROM TemplateDataModel
+	</select>
+	
+	<select id="TemplateDataModel-Find" parameterClass="Integer" resultMap="TemplateDataModel-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, datamodelid
+		FROM TemplateDataModel
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="TemplateDataModel-FindByTemplateid" parameterClass="Integer" resultMap="TemplateDataModel-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, datamodelid
+		FROM TemplateDataModel
+		WHERE (templateid = #value#)
+	</select>
+	<select id="TemplateDataModel-FindByDatamodelid" parameterClass="Integer" resultMap="TemplateDataModel-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, datamodelid
+		FROM TemplateDataModel
+		WHERE (datamodelid = #value#)
+	</select>
+	
+	<insert id="TemplateDataModel-Insert" parameterClass="TemplateDataModel">
+		INSERT INTO TemplateDataModel (
+			 templateid
+			, datamodelid
+		) VALUES (
+			 #templateid#
+			, #datamodelid#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="TemplateDataModel-Update" parameterClass="TemplateDataModel">
+		UPDATE TemplateDataModel SET
+			 templateid = #templateid#
+			, datamodelid = #datamodelid#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="TemplateDataModel-Delete" parameterClass="TemplateDataModel">
+		DELETE FROM TemplateDataModel
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="TemplateDataModel-DeleteByTemplateid" parameterClass="Integer">
+		DELETE FROM TemplateDataModel WHERE (templateid = #value#)
+	</delete>
+	<delete id="TemplateDataModel-DeleteByDatamodelid" parameterClass="Integer">
+		DELETE FROM TemplateDataModel WHERE (datamodelid = #value#)
+	</delete>
+	
+	<select id="TemplateDataModel-Reload" parameterClass="TemplateDataModel" resultMap="TemplateDataModel-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, datamodelid
+		FROM TemplateDataModel
+		WHERE (id = #id#)
+	</select>
+	
+	<update id="TemplateDataModel-UpdateByTemplateidAndDataModelid" parameterClass="java.util.Map">
+		delete from TemplateDataModel where templateid=#templateid# and datamodelid not in 
+		<iterate property="datamodelid" conjunction="," open="(" close=")">
+  			#datamodelid[]#
+ 		</iterate>
+		<iterate property="datamodelid" conjunction="" open="" close="">
+  			insert into TemplateDataModel (templateid,datamodelid) values (#templateid#,#datamodelid[]#)
+ 		</iterate> 
+	</update>
+
+</sqlMap>

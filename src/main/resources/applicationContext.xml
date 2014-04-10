@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 通过属性文件注入属性Start -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 通过属性文件注入属性End -->
+	<!-- DHCP方式配置数据源Start -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${db.driverClassName}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<!--maxActive: 最大连接数量-->
+        <property name="maxActive" value="150"/>
+        <!--minIdle: 最小空闲连接-->
+        <property name="minIdle" value="5"/>
+        <!--maxIdle: 最大空闲连接-->
+        <!-- 如果连接有限，maxIdle不要设置过大，同时timeBetweenEvictionRunsMillis也不要设置过长。当然资源充裕的情况下，减少收缩,可以设置大一点。 -->
+        <property name="maxIdle" value="20"/>
+        <!--initialSize: 初始化连接-->
+        <property name="initialSize" value="30"/>
+        <!-- 连接被泄露时是否打印 -->
+        <property name="logAbandoned" value="true"/>
+        <!--removeAbandoned: 是否自动回收超时连接-->
+        <property name="removeAbandoned"  value="true"/>
+        <!--removeAbandonedTimeout: 超时时间(以秒数为单位)-->
+        <property name="removeAbandonedTimeout" value="10"/>
+        <!--maxWait: 超时等待时间以毫秒为单位 1000等于60秒-->
+        <property name="maxWait" value="1000"/>
+        <!-- 在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. -->
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <!--  在每次空闲连接回收器线程(如果有)运行时检查的连接数量 -->
+        <property name="numTestsPerEvictionRun" value="10"/>
+        <!-- 1000 * 60 * 30  连接在池中保持空闲而不被空闲连接回收器线程-->
+        <property name="minEvictableIdleTimeMillis" value="10000"/>
+	</bean>
+	<!-- DHCP方式配置数据源End -->
+	<!-- c3p0 jdbc pool Start -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	    <property name="driverClass" value="${db.driverClassName}" />
+	    <property name="jdbcUrl" value="${db.url}" />
+	    <property name="user" value="${db.username}" />
+	    <property name="password" value="${db.password}" />
+	    初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3
+	    <property name="initialPoolSize" value="5"/>
+	    <property name="minPoolSize" value="5" />
+	    JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements
+				属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
+				如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0
+		<property name="maxStatements" value="100" />
+	    连接池中保留的最大连接数。Default: 15
+	    <property name="maxPoolSize" value="150" />
+	    <property name="acquireIncrement" value="2" />
+	    最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0
+	    <property name="maxIdleTime" value="60"/>     
+	</bean> -->
+	<!-- c3p0 jdbc pool End -->
+	<!-- 事务配置Start -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED,-Exception</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 事务配置End -->
+	<!-- ibatis配置Start -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>
+				classpath:SqlMapConfig.xml
+			</value>
+		</property>
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- ibatis配置End -->
+	<!-- Dao和Service单独配置文件Start -->
+	<import resource="bean/DataModelBean.xml" />
+	<import resource="bean/SourceBean.xml" />
+	<import resource="bean/SourceSpiderBean.xml" />
+	<import resource="bean/SpiderColumnBean.xml" />
+	<import resource="bean/SpideredUrlBean.xml" />
+	<import resource="bean/SpiderRegTemplateBean.xml" />
+	<import resource="bean/TestUrlBean.xml" />
+	<import resource="bean/TemplateBean.xml" />
+	<import resource="bean/TemplateDataModelBean.xml" />
+	<!-- Dao和Service单独配置文件End -->
+	<!-- velocity模版Start -->
+	<bean id="velocityView" class="org.springframework.web.servlet.ModelAndView" />
+	<!-- velocity模版End -->
+</beans>

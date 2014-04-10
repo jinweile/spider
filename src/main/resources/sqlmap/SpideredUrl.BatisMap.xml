@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="SpideredUrl">
+
+	<typeAlias alias="SpideredUrl" type="com.etaoshi.spider.model.SpideredUrl" />
+
+	<resultMap id="SpideredUrl-FullResultMap" class="SpideredUrl">
+		<result property="id" column="id"/>
+		<result property="domain" column="domain"/>
+		<result property="url" column="url"/>
+		<result property="spidereddate" column="spidereddate"/>
+	</resultMap>
+
+	<select id="SpideredUrl-GetCount" resultClass="Integer">
+		SELECT count(1) FROM SpideredUrl
+	</select>
+	
+	<select id="SpideredUrl-FindAll" resultMap="SpideredUrl-FullResultMap">
+		SELECT
+			id
+			, domain
+			, url
+			, spidereddate
+		FROM SpideredUrl
+	</select>
+	
+	<select id="SpideredUrl-Find" parameterClass="Integer" resultMap="SpideredUrl-FullResultMap">
+		SELECT
+			id
+			, domain
+			, url
+			, spidereddate
+		FROM SpideredUrl
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="SpideredUrl-FindByDomain" parameterClass="String" resultMap="SpideredUrl-FullResultMap">
+		SELECT
+			id
+			, domain
+			, url
+			, spidereddate
+		FROM SpideredUrl
+		WHERE (domain = #value#)
+	</select>
+	<select id="SpideredUrl-FindByUrl" parameterClass="String" resultMap="SpideredUrl-FullResultMap">
+		SELECT
+			id
+			, domain
+			, url
+			, spidereddate
+		FROM SpideredUrl
+		WHERE (url = #value#)
+	</select>
+	<select id="SpideredUrl-FindBySpidereddate" parameterClass="java.util.Date" resultMap="SpideredUrl-FullResultMap">
+		SELECT
+			id
+			, domain
+			, url
+			, spidereddate
+		FROM SpideredUrl
+		WHERE (spidereddate = #value#)
+	</select>
+	
+	<insert id="SpideredUrl-Insert" parameterClass="SpideredUrl">
+		INSERT INTO SpideredUrl (
+			 domain
+			, url
+			, spidereddate
+		) VALUES (
+			 #domain#
+			, #url#
+			, #spidereddate#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="SpideredUrl-Update" parameterClass="SpideredUrl">
+		UPDATE SpideredUrl SET
+			 domain = #domain#
+			, url = #url#
+			, spidereddate = #spidereddate#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="SpideredUrl-Delete" parameterClass="SpideredUrl">
+		DELETE FROM SpideredUrl
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="SpideredUrl-DeleteByDomain" parameterClass="String">
+		DELETE FROM SpideredUrl WHERE (domain = #value#)
+	</delete>
+	<delete id="SpideredUrl-DeleteByUrl" parameterClass="String">
+		DELETE FROM SpideredUrl WHERE (url = #value#)
+	</delete>
+	<delete id="SpideredUrl-DeleteBySpidereddate" parameterClass="java.util.Date">
+		DELETE FROM SpideredUrl WHERE (spidereddate = #value#)
+	</delete>
+	
+	<select id="SpideredUrl-Reload" parameterClass="SpideredUrl" resultMap="SpideredUrl-FullResultMap">
+		SELECT
+			id
+			, domain
+			, url
+			, spidereddate
+		FROM SpideredUrl
+		WHERE (id = #id#)
+	</select>
+
+</sqlMap>

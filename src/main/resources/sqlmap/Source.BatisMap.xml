@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="Source">
+
+	<typeAlias alias="Source" type="com.etaoshi.spider.model.Source" />
+
+	<resultMap id="Source-FullResultMap" class="Source">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="url" column="url"/>
+		<result property="isused" column="isused"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
+
+	<select id="Source-GetCount" resultClass="Integer">
+		SELECT count(1) FROM Source
+	</select>
+	
+	<select id="Source-FindAll" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+	</select>
+	
+	<select id="Source-Find" parameterClass="Integer" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="Source-FindByName" parameterClass="String" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+		WHERE (name = #value#)
+	</select>
+	<select id="Source-FindByUrl" parameterClass="String" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+		WHERE (url = #value#)
+	</select>
+	<select id="Source-FindByIsused" parameterClass="Boolean" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+		WHERE (isused = #value#)
+	</select>
+	<select id="Source-FindByRemark" parameterClass="String" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+		WHERE (remark = #value#)
+	</select>
+	
+	<insert id="Source-Insert" parameterClass="Source">
+		INSERT INTO Source (
+			 name
+			, url
+			, isused
+			, remark
+		) VALUES (
+			 #name#
+			, #url#
+			, #isused#
+			, #remark#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="Source-Update" parameterClass="Source">
+		UPDATE Source SET
+			 name = #name#
+			, url = #url#
+			, isused = #isused#
+			, remark = #remark#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="Source-Delete" parameterClass="Source">
+		DELETE FROM Source
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="Source-DeleteByName" parameterClass="String">
+		DELETE FROM Source WHERE (name = #value#)
+	</delete>
+	<delete id="Source-DeleteByUrl" parameterClass="String">
+		DELETE FROM Source WHERE (url = #value#)
+	</delete>
+	<delete id="Source-DeleteByIsused" parameterClass="Boolean">
+		DELETE FROM Source WHERE (isused = #value#)
+	</delete>
+	<delete id="Source-DeleteByRemark" parameterClass="String">
+		DELETE FROM Source WHERE (remark = #value#)
+	</delete>
+	
+	<select id="Source-Reload" parameterClass="Source" resultMap="Source-FullResultMap">
+		SELECT
+			id
+			, name
+			, url
+			, isused
+			, remark
+		FROM Source
+		WHERE (id = #id#)
+	</select>
+
+</sqlMap>

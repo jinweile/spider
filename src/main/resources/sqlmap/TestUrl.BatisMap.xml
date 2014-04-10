@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="TestUrl">
+
+	<typeAlias alias="TestUrl" type="com.etaoshi.spider.model.TestUrl" />
+
+	<resultMap id="TestUrl-FullResultMap" class="TestUrl">
+		<result property="id" column="id"/>
+		<result property="templateid" column="templateid"/>
+		<result property="testurl" column="testurl"/>
+		<result property="testcontent" column="testcontent"/>
+		<result property="parentid" column="parentid"/>
+	</resultMap>
+	<resultMap id="TestUrl-NonLobResultMap" class="TestUrl">
+		<result property="id" column="id"/>
+		<result property="templateid" column="templateid"/>
+		<result property="testurl" column="testurl"/>
+		<result property="parentid" column="parentid"/>
+	</resultMap>
+
+	<select id="TestUrl-GetCount" resultClass="Integer">
+		SELECT count(1) FROM TestUrl
+	</select>
+	
+	<select id="TestUrl-FindAll" resultMap="TestUrl-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+	</select>
+	<select id="TestUrl-QuickFindAll" resultMap="TestUrl-NonLobResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, parentid
+		FROM TestUrl
+	</select>
+	
+	<select id="TestUrl-Find" parameterClass="Integer" resultMap="TestUrl-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE
+			(id = #id#)
+	</select>
+	<select id="TestUrl-QuickFind" parameterClass="TestUrl" resultMap="TestUrl-NonLobResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="TestUrl-FindByTemplateid" parameterClass="Integer" resultMap="TestUrl-FullResultMap">
+		SELECT
+			*
+		FROM TestUrl
+		WHERE (templateid = #value#)
+	</select>
+	<select id="TestUrl-QuickFindByTemplateid" parameterClass="Integer" resultMap="TestUrl-NonLobResultMap">
+		SELECT
+			*
+		FROM TestUrl
+		WHERE (templateid = #value#)
+	</select>
+	<select id="TestUrl-FindByTesturl" parameterClass="String" resultMap="TestUrl-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE (testurl = #value#)
+	</select>
+	<select id="TestUrl-QuickFindByTesturl" parameterClass="String" resultMap="TestUrl-NonLobResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE (testurl = #value#)
+	</select>
+	<select id="TestUrl-FindByParentid" parameterClass="Integer" resultMap="TestUrl-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE (parentid = #value#)
+	</select>
+	<select id="TestUrl-QuickFindByParentid" parameterClass="Integer" resultMap="TestUrl-NonLobResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE (parentid = #value#)
+	</select>
+	
+	<insert id="TestUrl-Insert" parameterClass="TestUrl">
+		INSERT INTO TestUrl (
+			 templateid
+			, testurl
+			, testcontent
+			, parentid
+		) VALUES (
+			 #templateid#
+			, #testurl#
+			, #testcontent#
+			, #parentid#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="TestUrl-Update" parameterClass="TestUrl">
+		if exists (select 1 from TestUrl where templateid = #templateid# and parentid = #parentid#)
+		begin
+		    UPDATE TestUrl SET
+				 testurl = #testurl#
+				, testcontent = #testcontent#
+			WHERE
+				(templateid = #templateid# and parentid = #parentid#)
+		end
+		else
+		begin
+			INSERT INTO TestUrl (
+				 templateid
+				, testurl
+				, testcontent
+				, parentid
+			) VALUES (
+				 #templateid#
+				, #testurl#
+				, #testcontent#
+				, #parentid#
+			)
+		end
+	</update>
+
+	<delete id="TestUrl-Delete" parameterClass="TestUrl">
+		DELETE FROM TestUrl
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="TestUrl-DeleteByTemplateid" parameterClass="Integer">
+		DELETE FROM TestUrl WHERE (templateid = #value#)
+	</delete>
+	<delete id="TestUrl-DeleteByTesturl" parameterClass="String">
+		DELETE FROM TestUrl WHERE (testurl = #value#)
+	</delete>
+	<delete id="TestUrl-DeleteByParentid" parameterClass="Integer">
+		DELETE FROM TestUrl WHERE (parentid = #value#)
+	</delete>
+	
+	<select id="TestUrl-Reload" parameterClass="TestUrl" resultMap="TestUrl-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, testurl
+			, testcontent
+		FROM TestUrl
+		WHERE (id = #id#)
+	</select>
+
+</sqlMap>

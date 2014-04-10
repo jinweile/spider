@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="Template">
+
+	<typeAlias alias="Template" type="com.etaoshi.spider.model.Template" />
+
+	<resultMap id="Template-FullResultMap" class="Template">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="creationdate" column="creationdate"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
+
+	<select id="Template-GetCount" resultClass="Integer">
+		SELECT count(1) FROM Template
+	</select>
+	
+	<select id="Template-FindAll" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+	</select>
+	
+	<select id="Template-Find" parameterClass="Integer" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="Template-FindByDatamodelid" parameterClass="Integer" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+		WHERE (datamodelid = #value#)
+	</select>
+	<select id="Template-FindByName" parameterClass="String" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+		WHERE (name = #value#)
+	</select>
+	<select id="Template-FindByCreationdate" parameterClass="java.util.Date" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+		WHERE (creationdate = #value#)
+	</select>
+	<select id="Template-FindByRemark" parameterClass="String" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+		WHERE (remark = #value#)
+	</select>
+	
+	<insert id="Template-Insert" parameterClass="Template">
+		INSERT INTO Template (
+			 name
+			, creationdate
+			, remark
+		) VALUES (
+			 #name#
+			, #creationdate#
+			, #remark#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="Template-Update" parameterClass="Template">
+		UPDATE Template SET
+			 name = #name#
+			, remark = #remark#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="Template-Delete" parameterClass="Template">
+		DELETE FROM Template
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="Template-DeleteByName" parameterClass="String">
+		DELETE FROM Template WHERE (name = #value#)
+	</delete>
+	<delete id="Template-DeleteByCreationdate" parameterClass="java.util.Date">
+		DELETE FROM Template WHERE (creationdate = #value#)
+	</delete>
+	<delete id="Template-DeleteByRemark" parameterClass="String">
+		DELETE FROM Template WHERE (remark = #value#)
+	</delete>
+	
+	<select id="Template-Reload" parameterClass="Template" resultMap="Template-FullResultMap">
+		SELECT
+			id
+			, name
+			, creationdate
+			, remark
+		FROM Template
+		WHERE (id = #id#)
+	</select>
+
+</sqlMap>

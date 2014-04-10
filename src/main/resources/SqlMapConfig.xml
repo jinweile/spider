@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<!-- 参数说明： cacheModelsEnabled: 启用或禁用SqlMapClient的所有缓存model。调试程序时使用。 enhancementEnabled: 
+		启用或禁用运行时字节码增强，以优化访问Java Bean属性的性能，同时优化延迟加载的性能。 lazyLoadingEnabled: 启用或禁用SqlMapClient的所有延迟加载。调试程序时使用。 
+		maxRequests: 同时执行SQL语句的最大线程数。大于这个值的线程将阻塞直到另一个线程执行完成。 不同的DBMS有不同的限制值，但任何数据库都有这些限制。通常这个值应该至少是 
+		maxTransactions的10倍，并且总是大于maxSessions和maxTranactions。 减小这个参数值通常能提高性能。 maxSessions: 
+		同一时间内活动的最大session数。一个session可以是代码请求的显式session， 也可以是当线程使用SqlMapClient实例（即执行一条语句）自动获得的session。 
+		它应该总是大于或等于maxTransactions并小于maxRequests。减小这个参数值通常能 减少内存使用。 maxTransactions: 
+		同时进入SqlMapClient.startTransaction()的最大线程数。大于这个值的线程将阻塞 直到另一个线程退出。不同的DBMS有不同的限制值，但任何数据库都有这些限制。这个 
+		参数值应该总是小于或等于maxSessions并总是远远小于maxRequests。减小这个参数值 通常能提高性能。 useStatementNamespaces: 
+		如果启用本属性，必须使用全限定名来引用mapped statement。Mapped statement的 全限定名由sql-map的名称和mapped-statement的名称合成，例如 
+		queryForObject(“sqlMapName.statementName”) -->
+	<settings cacheModelsEnabled="true" enhancementEnabled="false"
+		lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000"
+		maxTransactions="3000" useStatementNamespaces="false" />
+	<sqlMap resource="sqlmap/DataModel.BatisMap.xml" />
+	<sqlMap resource="sqlmap/Source.BatisMap.xml" />
+	<sqlMap resource="sqlmap/SourceSpider.BatisMap.xml" />
+	<sqlMap resource="sqlmap/SpiderColumn.BatisMap.xml" />
+	<sqlMap resource="sqlmap/SpideredUrl.BatisMap.xml" />
+	<sqlMap resource="sqlmap/SpiderRegTemplate.BatisMap.xml" />
+	<sqlMap resource="sqlmap/TestUrl.BatisMap.xml" />
+	<sqlMap resource="sqlmap/Template.BatisMap.xml" />
+	<sqlMap resource="sqlmap/TemplateDataModel.BatisMap.xml" />
+</sqlMapConfig>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- daobean Start -->
+	<bean id="SourceDao" class="com.etaoshi.spider.dao.imp.SourceDao">
+		<property name="mapper">
+			<ref bean="sqlMapClient" />
+		</property>
+	</bean>
+	<!-- proxy -->
+	<bean id="ISourceDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>com.etaoshi.spider.dao.intf.ISourceDao</value>
+		</property>
+		<property name="target">
+			<ref bean="SourceDao" />
+		</property>
+	</bean>
+	<!-- daobean End -->
+	<!-- serviebean Start -->
+	<bean name="SourceService" class="com.etaoshi.spider.service.imp.SourceService">
+		<property name="SourceDao">
+			<ref bean="ISourceDao" />
+		</property>
+		<!-- <property name="MemcachedClient">
+			<ref bean="memcachedClient" />
+		</property> -->
+	</bean>
+	<!-- proxy,tran -->
+	<bean id="ISourceService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="singleton">
+			<value>true</value>
+		</property>
+		<property name="proxyInterfaces">
+			<value>com.etaoshi.spider.service.intf.ISourceService</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+				<value>SourceService</value>
+			</list>
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+	</bean>
+	<!-- serviebean End -->
+</beans>

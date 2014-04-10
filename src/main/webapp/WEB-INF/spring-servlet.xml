@@ -1,0 +1,91 @@
+<?xml  version="1.0"  encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- 配置spring扫描log4j -->
+	<context:property-placeholder location="/WEB-INF/classes/log4j.properties" ignore-unresolvable="true"/>
+	
+	<!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入 -->
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+	<!-- velocity配置 -->  
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <!-- <property name="configLocation" value="/WEB-INF/velocity.properties"/> -->
+        <property name="resourceLoaderPath" value="/WEB-INF/velocity/"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8 </prop>
+                <prop key="output.encoding">UTF-8 </prop>
+            </props>
+        </property> 
+    </bean>
+	<bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.velocity.VelocityView" />
+		<property name="cache" value="true"/>
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".html" />
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="dateToolAttribute" value="dataTool"/>
+        <property name="numberToolAttribute" value="numberTool"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+	</bean>
+
+	<context:annotation-config />
+	<context:property-placeholder location="classpath:settings.properties" />
+	<!-- 拦截器可以实现权限控制 -->
+    <bean id="LoginInteceptor" class="com.etaoshi.spider.web.LoginInteceptor"/>
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+		    <list>  
+		    	<ref bean="LoginInteceptor"/>
+		    </list>        
+		</property> 
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	<context:component-scan base-package="com.etaoshi.spider.web" />
+	
+	<!-- 
+		总错误处理,其中warnLogCategory日志对应log4j中log4j.rootLogger配置节,异常信息很全面,包括堆栈和controler信息
+		redirect:/uploaderror.html  forward:/include/error
+		warnLogCategory配置的异常不能记录到日志文件,这些所有功能在tomcat中都正常
+	 -->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">
+					include/error
+				</prop>
+			</props>
+		</property>
+		<property name="defaultErrorView">
+		 	<value>include/error</value>
+		</property>
+		<property name="defaultStatusCode">
+		 	<value>500</value>
+		</property>
+		<property name="warnLogCategory">
+		 	<value>WARN</value>
+		</property>
+	</bean>
+	<!-- 
+		自定义错误处理,jboss需要增加jboss-deployment-structure.xml文件来记录日志,
+		但是warnLogCategory配置的异常不能记录到日志文件,这些所有功能在tomcat中都正常 
+	-->
+	<!-- <bean id="myexeceptionResolver" class="com.etaoshi.spider.web.MyExceptionResolver"/> -->
+	
+	<!-- 允许对静态资源文件的访问 -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 启动抓取任务调度器 -->
+	<bean id="spiderTask" class="com.etaoshi.spider.job.SpiderTask" />
+
+</beans>

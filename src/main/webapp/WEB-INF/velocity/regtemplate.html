@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>抓取的正则模版</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/main_style.css" type="text/css" rel="stylesheet" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" />
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/checkbox.js" type="text/javascript"></script>
+    <script src="js/openDialogHelper.js" type="text/javascript"></script>
+    <script src="js/tree.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    	//type 1:url;2:content 
+		function regtest(type){
+			var rtid = $rtitem.id;
+			if(rtid == 0){
+				$("#groupresult").html("<font color='red'>您还没有选择测试的项目！</font><br/>");
+				return;
+			}
+			if(type==2 && $.trim($("textarea[name='testcontent']").val()) == ""){
+				$("#groupresult").html("<font color='red'>请输入测试的内容！</font><br/>");
+				return;
+			}
+			var url = type == 1 ? $.trim($("input[name='testurl']").val()) : $.trim($("textarea[name='testcontent']").val());
+		    $.post("testreg",
+		              { type:type,
+	              		url:url,
+	              		reg:$("textarea[name='spiderreg']").val(),
+	              		rule:$("textarea[name='entryrule']").val(),
+	              		tid:$tid,
+	              		parentid:$parentid,
+	              		rtid:$rtitem.id,
+	              		zip: Math.random() },
+		              function (data) {
+						data = eval('(' + data + ')');
+						if(data.istrue){
+							$("#groupcount").html(data.result.length);
+							var show = "";
+							for(var i=0;i<data.result.length;i++){
+								show += "<br/>";
+								show += "<font color='red'>第" + (i+1) + "组:</font><br/>";
+								show += data.result[i];
+							}
+							$("#groupresult").html(show);
+						}else{
+							$("#groupresult").html("<font color='red'>"+data.msg+"</font>");
+						}
+		              }
+		        );
+		}
+    </script>
+</head>
+<body id="main_content">
+    <div class="t">
+        <ul>
+            <li style="background: none;">您所在的位置： </li>
+		    <li><a href="template" title="抓取的数据">$tobj.name</a></li>
+            <li> 抓取的正则模版</li>
+        </ul>
+    </div>
+    <h1>
+        抓取的正则模版
+    </h1>
+    <div class="area">
+        <!--列表start-->
+        <div id="div_tree" style="float: left; width:250px; height:300px; overflow:scroll; margin-right: 10px; margin-left:80px; background-color:beige;">
+            
+        </div>
+        <div style="float: left; width:860px;">
+        <div style="float: right; padding-right: 20px; padding-bottom:10px;">
+            <a href='regtemplate?tid=$tid&parentid=$parentid'>
+                新增抓取项</a>
+                </div>
+            <table class="tab_style" cellpadding="0" cellspacing="1" border="0">
+                <tr>
+                    <th style="width: 30px;">
+                        <input type="checkbox" id="check" onclick="javascript:CheckAllArea(this);" />
+                    </th>
+                    <th style="width: 50px">
+                        id
+                    </th>
+                    <th>
+                        映射的列别名
+                    </th>
+                    <th>
+                        映射的列名
+                    </th>
+                    <th style="width: 50px">
+                        抓取排序
+                    </th>
+                    <th>
+                        入口
+                    </th>
+                    <th style="width: 50px">
+                        修改
+                    </th>
+                    <th style="width: 50px">
+                        删除
+                    </th>
+                     <th style="width: 50px">
+                       入口
+                    </th>
+                </tr>
+                #foreach($item in $list)
+	                <tr onmouseover="c=this.style.backgroundColor;this.style.backgroundColor='#ccffaa';" #if($item.id.equals($rtitem.id)) style="background-color: #ffb7b7;" #end
+	                    onmouseout="this.style.backgroundColor=c;">
+	                    <td>
+	                        <input type="checkbox" name="delid" title="" value='$item.id' onclick="javascript:Checkbox(this);" />
+	                    </td>
+	                    <td>
+	                        $item.id
+	                    </td>
+	                    <td>
+	                        #if($item.typeid == 0) 过滤 #elseif($item.typeid == -1) 入口 #else $scservice.Find($item.typeid).columncname #end
+	                    </td>
+	                    <td>
+	                        #if($item.typeid == 0) filter #elseif($item.typeid == -1) entry #else $scservice.Find($item.typeid).columnename #end
+	                    </td>
+	                    <td>
+	                        $item.spiderorderby
+	                    </td>
+	                    <td>
+	                        #if($item.isspiderentry == 1) 是 #else 否 #end
+	                    </td>
+	                    <td>
+	                        <a href='regtemplate?tid=$tid&parentid=$parentid&rtid=$item.id'
+	                            class="btn_style_a" style="display: inline-block; width: 40px;">
+	                            修改</a>
+	                    </td>
+	                    <td>
+	                           <a onclick="javascript:if(!confirm('确定删除？')){var e = window.event || arguments[0]; if(window.event){e.returnValue = false;}else{e.preventDefault();}}"
+			href='rtdel?tid=$tid&parentid=$parentid&rtid=$item.id' class="btn_style_a" style="display: inline-block; width: 40px;">
+	                            删除</a>
+	                    </td>
+	                      <td>
+	                           #if($item.isspiderentry == 1)<a href='regtemplate?tid=$tid&parentid=$item.id' class="btn_style_a" style="display: inline-block; width: 40px;">入口</a>#end
+	                    </td>
+	                </tr>
+			#end
+            </table>
+        </div>
+        <div style="clear:both;"></div>
+        <!--列表end-->
+        <div class="area">
+            <div style="float: left; width: auto; margin-right:20px;">
+            <form method="post" action="rtupdate?tid=$tid&parentid=$parentid">
+            	<input type="hidden" name="rtid" value="$rtitem.id"/>
+                <ul class="label">
+                    <li><span class="title">测试Url:</span> <span class="input_area">
+                        <input type="text" name="testurl" style="width:280px;" value="$tuitem.testurl" /></span>
+                        <span></span></li>
+                    <li><span class="title">测试TestContent:</span> <span class="input_area">
+                        <textarea name="testcontent" rows="2" cols="20" style="height:188px;width:280px;">$tuitem.testcontent</textarea></span>
+                        <span></span></li>
+                    <li><span class="title">抓取类型:</span>
+                        <span class="input_area">
+				            <select name="typeid" >
+				            	<option #if($rtitem.typeid == 0) selected="selected" #end value="0">[filter]过滤</option>
+				            	<option #if($rtitem.typeid == -1) selected="selected" #end value="-1">[entry]入口</option>
+				            #foreach($scitem in $sclist)
+								<option #if($scitem.id.equals($rtitem.typeid)) selected="selected" #end value="$scitem.id">
+									[$scitem.columnename]$scitem.columncname
+								</option>
+							#end
+							</select>
+                        </span>
+                    </li>
+                    <li><span class="title">正则表达式:</span> <span class="input_area">
+                        <textarea name="spiderreg" rows="2" cols="20" style="height:188px;width:280px;">$rtitem.spiderreg</textarea></span>
+                        <span></span>
+                    </li>
+					<li>
+						<span class="title"></span>
+						<span class="input_area">
+							<input type="button" value="Url测试" onclick="regtest(1)" class="btn_style" style="height:20px;"/>
+							<input type="button" value="Content测试" onclick="regtest(2)" class="btn_style" style="height:20px;"/>
+						</span>
+					</li>
+                    <li><span class="title">抓取排序:</span>
+                        <span class="input_area"><input type="text" name="spiderorderby" style="width:280px;" value="$rtitem.spiderorderby" /></span>
+                        <span></span>
+                    </li>
+                    <li><span class="title">是否下一步抓取:</span><span class="input_area">
+			            <select name="isspiderentry" >
+							<option #if($rtitem.isspiderentry == 1) selected="selected" #end value="1">是</option>
+							<option #if($rtitem.isspiderentry == 0) selected="selected" #end value="0">否</option>
+						</select></span>
+                    </li>
+                    <li><span class="title">入口规则:</span> <span class="input_area">
+                        <textarea name="entryrule" rows="2" cols="20" style="height:188px;width:280px;">$rtitem.entryrule</textarea></span>
+                        <span></span></li>
+                    <li><span class="title"></span><span class="input_area">
+                        <input type="submit" value="确定" class="btn_style" style="height:20px;" onclick="return confirm('确定此操作?');"/>&nbsp;&nbsp;
+                        <input type="reset" value="重写" class="btn_style" style="height:20px;"/>
+                    </span></li>
+                </ul>
+            </form>
+            </div>
+            <div style="float: left; background-color:beige; width:780px; height:800px; overflow:scroll;">
+                <h1 style="text-align:left;">测试结果，共<font id="groupcount" color="red"></font>组数据</h1>
+                <pre id="groupresult" style="text-align:left;">
+                
+                </pre>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+	<script>
+		$js
+		document.getElementById("div_tree").innerHTML = tree.toString();
+		tree.expandAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>模版关联列表</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/main_style.css" type="text/css" rel="stylesheet" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" />
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/checkbox.js" type="text/javascript"></script>
+    <script src="js/openDialogHelper.js" type="text/javascript"></script>
+</head>
+<body id="main_content">
+    <div class="t">
+        <ul>
+            <li style="background: none;">您所在的位置： </li>
+            <li class="liclass">统计源列表</li>
+		    <li class="liclass">模版关联列表</li>
+            <li>$sservice.Find($sourceid).name</li>
+        </ul>
+    </div>
+    <h1>
+        模版关联列表
+    </h1>
+    <div class="area">
+        <div style="padding: 10px 0 25px 0;">
+            <div style="float: right; padding-right: 20px;">
+                <a href="javascript:void(0)" onclick="javascript:$.OpenDialogHelper.openModalDlg('spedit?sourceid=$sourceid',700,0)">
+                    新增模版关联</a>
+            </div>
+        </div>
+        <!--列表start-->
+        <table class="tab_style" cellpadding="0" cellspacing="1" border="0">
+            <tr>
+                <th style="width: 30px;">
+                    <input type="checkbox" id="check" onclick="javascript:CheckAllArea(this);" />
+                </th>
+                <th style="width: 50px">
+                    id
+                </th>
+                <th>
+                    模版名称
+                </th>
+                <th>
+                    [映射的表名]数据模型名称
+                </th>
+                <th>
+                    作业规则
+                </th>
+                <th>
+                    是否启用
+                </th>
+                <th style="width: 120px">
+                    创建时间
+                </th>
+                <th style="width: 50px">
+                    修改
+                </th>
+            </tr>
+			#foreach($item in $list)
+			#set($templatedatamodel_list = $tdmservice.FindByTemplateid($item.templateid))
+			<tr
+				onmouseover="c=this.style.backgroundColor;this.style.backgroundColor='#ccffaa';"
+				onmouseout="this.style.backgroundColor=c;">
+				<td>
+					<input type="checkbox" name="delid" title=""
+						value='$item.id'
+						onclick="javascript:Checkbox(this);" />
+				</td>
+				<td>
+					$item.id
+				</td>
+				<td class="title">
+					$tservice.Find($item.templateid).name
+				</td>
+				<td class="title">
+				#foreach($tdmitem in $templatedatamodel_list)
+					#set($dmitem=$dmservice.Find($tdmitem.datamodelid))
+					[$dmitem.tablename]$dmitem.name , 
+				#end
+				</td>
+				<td>
+					$item.jobrule
+				</td>
+				<td>
+					$item.isused
+				</td>
+				<td>
+					$dataTool.format("yyyy-MM-dd HH:mm",$item.creationdate)
+				</td>
+				<td>
+					<a href='javascript:void(0);'
+						onclick="$.OpenDialogHelper.openModalDlg('spedit?sourceid=$sourceid&spid=$item.id',700,0)"
+						class="btn_style_a"
+						style="display: inline-block; width: 40px; margin-top: 2px;">修改</a>
+				</td>
+			</tr>
+		#end
+        </table>
+        <!--列表end-->
+    </div>
+</body>
+</html>

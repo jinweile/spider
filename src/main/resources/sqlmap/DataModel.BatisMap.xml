@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="DataModel">
+
+	<typeAlias alias="DataModel" type="com.etaoshi.spider.model.DataModel" />
+
+	<resultMap id="DataModel-FullResultMap" class="DataModel">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="tablename" column="tablename"/>
+		<result property="creationdate" column="creationdate"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
+
+	<select id="DataModel-GetCount" resultClass="Integer">
+		SELECT count(1) FROM DataModel
+	</select>
+	
+	<select id="DataModel-FindAll" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+	</select>
+	
+	<select id="DataModel-Find" parameterClass="Integer" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="DataModel-FindByName" parameterClass="String" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+		WHERE (name = #value#)
+	</select>
+	<select id="DataModel-FindByTablename" parameterClass="String" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+		WHERE (tablename = #value#)
+	</select>
+	<select id="DataModel-FindByCreationdate" parameterClass="java.util.Date" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+		WHERE (creationdate = #value#)
+	</select>
+	<select id="DataModel-FindByRemark" parameterClass="String" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+		WHERE (remark = #value#)
+	</select>
+	
+	<insert id="DataModel-Insert" parameterClass="DataModel">
+		INSERT INTO DataModel (
+			 name
+			, tablename
+			, creationdate
+			, remark
+		) VALUES (
+			 #name#
+			, #tablename#
+			, #creationdate#
+			, #remark#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="DataModel-Update" parameterClass="DataModel">
+		UPDATE DataModel SET
+			 name = #name#
+			, remark = #remark#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="DataModel-Delete" parameterClass="DataModel">
+		DELETE FROM DataModel
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="DataModel-DeleteByName" parameterClass="String">
+		DELETE FROM DataModel WHERE (name = #value#)
+	</delete>
+	<delete id="DataModel-DeleteByTablename" parameterClass="String">
+		DELETE FROM DataModel WHERE (tablename = #value#)
+	</delete>
+	<delete id="DataModel-DeleteByCreationdate" parameterClass="java.util.Date">
+		DELETE FROM DataModel WHERE (creationdate = #value#)
+	</delete>
+	<delete id="DataModel-DeleteByRemark" parameterClass="String">
+		DELETE FROM DataModel WHERE (remark = #value#)
+	</delete>
+	
+	<select id="DataModel-Reload" parameterClass="DataModel" resultMap="DataModel-FullResultMap">
+		SELECT
+			id
+			, name
+			, tablename
+			, creationdate
+			, remark
+		FROM DataModel
+		WHERE (id = #id#)
+	</select>
+	
+	<select id="DataModel-ChkDbTableName" parameterClass="String" resultClass="Integer">
+		exec ( 'select 1 from  sysobjects where  id = object_id('''+#value#+''') and   type = ''U''')
+	</select>
+	
+	<update id="DataModel-CreateDataModel" parameterClass="String">
+		exec (
+			'if not exists (select 1
+			            from  sysobjects
+			           where  id = object_id('''+#value#+''')
+			            and   type = ''U'')
+			begin
+				create table '+#value#+'
+				(
+					id bigint identity,
+					sourcespiderid int not null,
+					spidertime datetime not null,
+					constraint PK_'+#value#+' primary key (id)
+				)
+			end'
+		)
+	</update>
+
+</sqlMap>

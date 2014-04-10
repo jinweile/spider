@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="SourceSpider">
+
+	<typeAlias alias="SourceSpider" type="com.etaoshi.spider.model.SourceSpider" />
+
+	<resultMap id="SourceSpider-FullResultMap" class="SourceSpider">
+		<result property="id" column="id"/>
+		<result property="sourceid" column="sourceid"/>
+		<result property="templateid" column="templateid"/>
+		<result property="spiderentryrule" column="spiderentryrule"/>
+		<result property="jobrule" column="jobrule"/>
+		<result property="creationdate" column="creationdate"/>
+		<result property="remark" column="remark"/>
+		<result property="isused" column="isused"/>
+	</resultMap>
+
+	<select id="SourceSpider-GetCount" resultClass="Integer">
+		SELECT count(1) FROM SourceSpider
+	</select>
+	
+	<select id="SourceSpider-FindAll" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+	</select>
+	
+	<select id="SourceSpider-Find" parameterClass="Integer" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="SourceSpider-FindBySourceid" parameterClass="Integer" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (sourceid = #value#)
+	</select>
+	<select id="SourceSpider-FindByTemplateid" parameterClass="Integer" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (templateid = #value#)
+	</select>
+	<select id="SourceSpider-FindBySpiderentryrule" parameterClass="String" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (spiderentryrule = #value#)
+	</select>
+	<select id="SourceSpider-FindByJobrule" parameterClass="String" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (jobrule = #value#)
+	</select>
+	<select id="SourceSpider-FindByCreationdate" parameterClass="java.util.Date" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (creationdate = #value#)
+	</select>
+	<select id="SourceSpider-FindByRemark" parameterClass="String" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (remark = #value#)
+	</select>
+	<select id="SourceSpider-FindByIsused" parameterClass="Boolean" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (isused = #value#)
+	</select>
+	
+	<insert id="SourceSpider-Insert" parameterClass="SourceSpider">
+		INSERT INTO SourceSpider (
+			 sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		) VALUES (
+			 #sourceid#
+			, #templateid#
+			, #spiderentryrule#
+			, #jobrule#
+			, #creationdate#
+			, #remark#
+			, #isused#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="SourceSpider-Update" parameterClass="SourceSpider">
+		UPDATE SourceSpider SET
+			templateid = #templateid#
+			, spiderentryrule = #spiderentryrule#
+			, jobrule = #jobrule#
+			, remark = #remark#
+			, isused = #isused#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="SourceSpider-Delete" parameterClass="SourceSpider">
+		DELETE FROM SourceSpider
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="SourceSpider-DeleteBySourceid" parameterClass="Integer">
+		DELETE FROM SourceSpider WHERE (sourceid = #value#)
+	</delete>
+	<delete id="SourceSpider-DeleteByTemplateid" parameterClass="Integer">
+		DELETE FROM SourceSpider WHERE (templateid = #value#)
+	</delete>
+	<delete id="SourceSpider-DeleteBySpiderentryrule" parameterClass="String">
+		DELETE FROM SourceSpider WHERE (spiderentryrule = #value#)
+	</delete>
+	<delete id="SourceSpider-DeleteByJobrule" parameterClass="String">
+		DELETE FROM SourceSpider WHERE (jobrule = #value#)
+	</delete>
+	<delete id="SourceSpider-DeleteByCreationdate" parameterClass="java.util.Date">
+		DELETE FROM SourceSpider WHERE (creationdate = #value#)
+	</delete>
+	<delete id="SourceSpider-DeleteByRemark" parameterClass="String">
+		DELETE FROM SourceSpider WHERE (remark = #value#)
+	</delete>
+	<delete id="SourceSpider-DeleteByIsused" parameterClass="Boolean">
+		DELETE FROM SourceSpider WHERE (isused = #value#)
+	</delete>
+	
+	<select id="SourceSpider-Reload" parameterClass="SourceSpider" resultMap="SourceSpider-FullResultMap">
+		SELECT
+			id
+			, sourceid
+			, templateid
+			, spiderentryrule
+			, jobrule
+			, creationdate
+			, remark
+			, isused
+		FROM SourceSpider
+		WHERE (id = #id#)
+	</select>
+
+</sqlMap>

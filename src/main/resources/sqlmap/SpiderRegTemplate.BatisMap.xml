@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="SpiderRegTemplate">
+
+	<typeAlias alias="SpiderRegTemplate" type="com.etaoshi.spider.model.SpiderRegTemplate" />
+
+	<resultMap id="SpiderRegTemplate-FullResultMap" class="SpiderRegTemplate">
+		<result property="id" column="id"/>
+		<result property="templateid" column="templateid"/>
+		<result property="parentid" column="parentid"/>
+		<result property="typeid" column="typeid"/>
+		<result property="spiderreg" column="spiderreg"/>
+		<result property="spiderorderby" column="spiderorderby"/>
+		<result property="isspiderentry" column="isspiderentry"/>
+		<result property="entryrule" column="entryrule"/>
+	</resultMap>
+
+	<select id="SpiderRegTemplate-GetCount" resultClass="Integer">
+		SELECT count(1) FROM SpiderRegTemplate
+	</select>
+	
+	<select id="SpiderRegTemplate-FindAll" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+	</select>
+	
+	<select id="SpiderRegTemplate-Find" parameterClass="Integer" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="SpiderRegTemplate-FindByTemplateid" parameterClass="Integer" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (templateid = #value#)
+		order by spiderorderby asc
+	</select>
+	<select id="SpiderRegTemplate-FindByParentid" parameterClass="Integer" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (parentid = #value#)
+	</select>
+	<select id="SpiderRegTemplate-FindByTypeid" parameterClass="Integer" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (typeid = #value#)
+	</select>
+	<select id="SpiderRegTemplate-FindBySpiderreg" parameterClass="String" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (spiderreg = #value#)
+	</select>
+	<select id="SpiderRegTemplate-FindBySpiderorderby" parameterClass="Integer" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (spiderorderby = #value#)
+	</select>
+	<select id="SpiderRegTemplate-FindByIsspiderentry" parameterClass="Integer" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (isspiderentry = #value#)
+	</select>
+	<select id="SpiderRegTemplate-FindByEntryrule" parameterClass="String" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (entryrule = #value#)
+	</select>
+	
+	<insert id="SpiderRegTemplate-Insert" parameterClass="SpiderRegTemplate">
+		INSERT INTO SpiderRegTemplate (
+			 templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		) VALUES (
+			 #templateid#
+			, #parentid#
+			, #typeid#
+			, #spiderreg#
+			, #spiderorderby#
+			, #isspiderentry#
+			, #entryrule#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="SpiderRegTemplate-Update" parameterClass="SpiderRegTemplate">
+		UPDATE SpiderRegTemplate SET
+			 typeid = #typeid#
+			, spiderreg = #spiderreg#
+			, spiderorderby = #spiderorderby#
+			, isspiderentry = #isspiderentry#
+			, entryrule = #entryrule#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="SpiderRegTemplate-Delete" parameterClass="SpiderRegTemplate">
+		DELETE FROM SpiderRegTemplate
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="SpiderRegTemplate-DeleteByTemplateid" parameterClass="Integer">
+		DELETE FROM SpiderRegTemplate WHERE (templateid = #value#)
+	</delete>
+	<delete id="SpiderRegTemplate-DeleteByParentid" parameterClass="Integer">
+		DELETE FROM SpiderRegTemplate WHERE (parentid = #value#)
+	</delete>
+	<delete id="SpiderRegTemplate-DeleteByTypeid" parameterClass="Integer">
+		DELETE FROM SpiderRegTemplate WHERE (typeid = #value#)
+	</delete>
+	<delete id="SpiderRegTemplate-DeleteBySpiderreg" parameterClass="String">
+		DELETE FROM SpiderRegTemplate WHERE (spiderreg = #value#)
+	</delete>
+	<delete id="SpiderRegTemplate-DeleteBySpiderorderby" parameterClass="Integer">
+		DELETE FROM SpiderRegTemplate WHERE (spiderorderby = #value#)
+	</delete>
+	<delete id="SpiderRegTemplate-DeleteByIsspiderentry" parameterClass="Integer">
+		DELETE FROM SpiderRegTemplate WHERE (isspiderentry = #value#)
+	</delete>
+	<delete id="SpiderRegTemplate-DeleteByEntryrule" parameterClass="String">
+		DELETE FROM SpiderRegTemplate WHERE (entryrule = #value#)
+	</delete>
+	
+	<select id="SpiderRegTemplate-Reload" parameterClass="SpiderRegTemplate" resultMap="SpiderRegTemplate-FullResultMap">
+		SELECT
+			id
+			, templateid
+			, parentid
+			, typeid
+			, spiderreg
+			, spiderorderby
+			, isspiderentry
+			, entryrule
+		FROM SpiderRegTemplate
+		WHERE (id = #id#)
+	</select>
+
+</sqlMap>

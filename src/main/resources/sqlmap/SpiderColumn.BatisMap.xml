@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="SpiderColumn">
+
+	<typeAlias alias="SpiderColumn" type="com.etaoshi.spider.model.SpiderColumn" />
+
+	<resultMap id="SpiderColumn-FullResultMap" class="SpiderColumn">
+		<result property="id" column="id"/>
+		<result property="datamodelid" column="datamodelid"/>
+		<result property="columnename" column="columnename"/>
+		<result property="columncname" column="columncname"/>
+		<result property="columntype" column="columntype"/>
+		<result property="columnlen" column="columnlen"/>
+		<result property="columnaccuracy" column="columnaccuracy"/>
+		<result property="creationdate" column="creationdate"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
+
+	<select id="SpiderColumn-GetCount" resultClass="Integer">
+		SELECT count(1) FROM SpiderColumn
+	</select>
+	
+	<select id="SpiderColumn-FindAll" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+	</select>
+	
+	<select id="SpiderColumn-Find" parameterClass="Integer" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE
+			(id = #id#)
+	</select>
+	
+	<select id="SpiderColumn-FindByDatamodelid" parameterClass="Integer" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (datamodelid = #value#)
+	</select>
+	<select id="SpiderColumn-FindByColumnename" parameterClass="String" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (columnename = #value#)
+	</select>
+	<select id="SpiderColumn-FindByColumncname" parameterClass="String" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (columncname = #value#)
+	</select>
+	<select id="SpiderColumn-FindByColumntype" parameterClass="Integer" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (columntype = #value#)
+	</select>
+	<select id="SpiderColumn-FindByColumnlen" parameterClass="Integer" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (columnlen = #value#)
+	</select>
+	<select id="SpiderColumn-FindByColumnaccuracy" parameterClass="Integer" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (columnaccuracy = #value#)
+	</select>
+	<select id="SpiderColumn-FindByCreationdate" parameterClass="java.util.Date" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (creationdate = #value#)
+	</select>
+	<select id="SpiderColumn-FindByRemark" parameterClass="String" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (remark = #value#)
+	</select>
+	
+	<insert id="SpiderColumn-Insert" parameterClass="SpiderColumn">
+		INSERT INTO SpiderColumn (
+			 datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		) VALUES (
+			 #datamodelid#
+			, #columnename#
+			, #columncname#
+			, #columntype#
+			, #columnlen#
+			, #columnaccuracy#
+			, #creationdate#
+			, #remark#
+		)
+		<selectKey resultClass="Integer" keyProperty="id" >
+			<!--select LAST_INSERT_ID() as value-->
+			select @@identity as value
+		</selectKey>
+	</insert>
+
+	<update id="SpiderColumn-Update" parameterClass="SpiderColumn">
+		UPDATE SpiderColumn SET
+			 columncname = #columncname#
+			, remark = #remark#
+		WHERE
+			(id = #id#)
+	</update>
+
+	<delete id="SpiderColumn-Delete" parameterClass="SpiderColumn">
+		DELETE FROM SpiderColumn
+		WHERE
+			(id = #id#)
+	</delete>
+
+	<delete id="SpiderColumn-DeleteByDatamodelid" parameterClass="Integer">
+		DELETE FROM SpiderColumn WHERE (datamodelid = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByColumnename" parameterClass="String">
+		DELETE FROM SpiderColumn WHERE (columnename = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByColumncname" parameterClass="String">
+		DELETE FROM SpiderColumn WHERE (columncname = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByColumntype" parameterClass="Integer">
+		DELETE FROM SpiderColumn WHERE (columntype = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByColumnlen" parameterClass="Integer">
+		DELETE FROM SpiderColumn WHERE (columnlen = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByColumnaccuracy" parameterClass="Integer">
+		DELETE FROM SpiderColumn WHERE (columnaccuracy = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByCreationdate" parameterClass="java.util.Date">
+		DELETE FROM SpiderColumn WHERE (creationdate = #value#)
+	</delete>
+	<delete id="SpiderColumn-DeleteByRemark" parameterClass="String">
+		DELETE FROM SpiderColumn WHERE (remark = #value#)
+	</delete>
+	
+	<select id="SpiderColumn-Reload" parameterClass="SpiderColumn" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE (id = #id#)
+	</select>
+	
+	<update id="SpiderColumn-Alter" parameterClass="java.util.Map">
+		exec(
+			'if not exists (select 1 from syscolumns where id=object_id('''+#tablename#+''') and name='''+#columnename#+''' )
+			begin
+				alter table '+#tablename#+' add '+#columnename#+' '+#ctypelen#+'
+			end'
+		)
+	</update>
+	
+	<select id="SpiderColumn-FindByTemplateid" parameterClass="Integer" resultMap="SpiderColumn-FullResultMap">
+		SELECT
+			id
+			, datamodelid
+			, columnename
+			, columncname
+			, columntype
+			, columnlen
+			, columnaccuracy
+			, creationdate
+			, remark
+		FROM SpiderColumn
+		WHERE datamodelid in (select datamodelid from TemplateDataModel where templateid = #value#) 
+	</select>
+	
+	<insert id="SpiderColumn-InsertIntoDataModel" parameterClass="String">
+		exec (#value#)
+	</insert>
+	
+	<select id="SpiderColumn-getDynamicTable" resultClass="java.util.HashMap" remapResults="true" parameterClass="String">
+	    exec (#value#)
+	</select>
+	
+	<select id="SpiderColumn-getDynamicTableCount" resultClass="Integer" parameterClass="String">
+	    exec ('select count(1) from ' + #value#)
+	</select>
+
+</sqlMap>

@@ -1,0 +1,67 @@
+<!--分页start-->
+<script type='text/javascript'>
+	function getPage(){
+		var pageIndex = document.getElementById('pageText').value;
+		window.location.href='$pager.urlPath?$pager.urlParam='+pageIndex;
+	}
+</script>
+<div style="margin-top: 20px; text-align: center;">
+	共$pager.countNum条记录&nbsp;&nbsp;
+	第$pager.pageIndex页/共$pager.pageCount页&nbsp;&nbsp;
+	#if($pager.pageIndex == 1)
+		首页 上一页
+	#else
+		#set($preIndex = $pager.pageIndex - 1)
+		<a href="$pager.urlPath?$pager.urlParam=1">首页</a>
+		<a href="$pager.urlPath?$pager.urlParam=$preIndex">上一页</a>
+	#end
+	#set($showPageNums = 10)
+	#if($pager.pageCount <= $showPageNums)
+		#foreach($i in [1..$pager.pageCount])
+		  #if($i == $pager.pageIndex)
+		  	[$i]
+		  #else
+		  	<a href="$pager.urlPath?$pager.urlParam=$i">$i</a>
+		  #end
+		#end
+	#else
+		#set($index=1)
+		#set($prenextNums = 4)
+		#if($pager.pageIndex > $prenextNums)
+			#set($start = $pager.pageIndex - $prenextNums)
+			#foreach($j in [$start..$pager.pageCount])
+				#if($j == $pager.pageIndex)
+					[$j]
+				#else
+					<a href="$pager.urlPath?$pager.urlParam=$j">$j</a>
+				#end
+				#set($index = $index + 1)
+				#if($index > $showPageNums)
+					#break
+				#end
+			#end
+		#else
+			#foreach($k in [1..$pager.pageCount])
+				#if($k == $pager.pageIndex)
+					[$k]
+				#else
+					<a href="$pager.urlPath?$pager.urlParam=$k">$k</a>
+				#end
+				#set($index = $index + 1)
+				#if($index > $showPageNums)
+					#break
+				#end
+			#end
+		#end
+	#end
+	#if($pager.pageIndex == $pager.pageCount || $pager.countNum == 0)
+		下一页 末页
+	#else
+		#set($nextIndex = $pager.pageIndex + 1)
+		<a href="$pager.urlPath?$pager.urlParam=$nextIndex">下一页</a>
+		<a href="$pager.urlPath?$pager.urlParam=$pager.pageCount">末页</a>
+	#end
+	 转到第<input type='text' name='pageText' id='pageText' style='width:30px;' />页
+	 <input type='button' name='pageBtn' value='GO' onclick='getPage()' style='width:30px;'/>
+</div>
+<!--分页end-->
