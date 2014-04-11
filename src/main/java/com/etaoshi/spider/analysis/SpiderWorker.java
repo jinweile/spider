@@ -159,7 +159,7 @@ public class SpiderWorker {
                                         + "\r\n--------------------------------\r\n");
                         		return;
                 			}
-                			if(indbList.get(_fieldkey).size() != indbList.get(_fieldkey).size()){
+                			if(indbList.get(_fieldkey).size() != indbList.get(fieldkey).size()){
                 				logger.error("\r\n---------------------------------"
                                         + "\r\n存入数据库长度不同，具体信息："
                                         + "\r\n模版ID:" + tid
