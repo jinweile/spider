@@ -135,7 +135,7 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("quartz.properties");
 		prop.load(is);
     	//SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-		StdSchedulerFactory schedulerFactory = new StdSchedulerFactory();
+    	StdSchedulerFactory schedulerFactory = new StdSchedulerFactory();
     	schedulerFactory.initialize(prop);
     	scheduler = schedulerFactory.getScheduler();
 		
@@ -233,7 +233,7 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 									try {
 										scservice.InsertIntoDataModel(sql);
 									} catch (SQLException e) {
-										logger.error(e.getStackTrace());
+										logger.error(e.getStackTrace() + "\r\n" + sql);
 									}
 								}
 							}
@@ -381,7 +381,7 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 		} catch (ParseException e) {
 			logger.error(e.getStackTrace());
 		} catch (IOException e) {
-			logger.error(e.getStackTrace());
+			logger.error(e.getStackTrace().toString());
 		}
 	}
 
