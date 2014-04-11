@@ -212,7 +212,7 @@ public class SpiderWorker {
                 		if(i == 0){
                 			sql += sql.endsWith("(") ? "" : ",";
                 		}
-                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(key))) + "'";
+                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(key)).replaceAll("\\s", "")) + "'";
                 		if(i < len - 1)
                 			sql += ",";
                 		i++;
@@ -223,7 +223,7 @@ public class SpiderWorker {
                 		if(i == 0){
                 			sql += sql.endsWith("(") ? "" : ",";
                 		}
-                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(requestkey))) + "'";
+                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(requestkey)).replaceAll("\\s", "")) + "'";
                 		if(i < len - 1)
                 			sql += ",";
                 		i++;
@@ -353,19 +353,21 @@ public class SpiderWorker {
 								spider_url_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
 								nums += add;
 							}
-							nums = min;
-							//再替换postbody
-							while(nums <= max){
-								Map<String,String> PostBody_map = new HashMap<String,String>();
-								for(String key : PostBody.keySet()){
-									String value = PostBody.get(key);
-									if(PostBody.get(key).contains("{{page}}")){
-										value = value.replaceAll("\\{\\{page\\}\\}", "" + nums);
+							if(PostBody != null && PostBody.size() > 0){
+								nums = min;
+								//再替换postbody
+								while(nums <= max){
+									Map<String,String> PostBody_map = new HashMap<String,String>();
+									for(String key : PostBody.keySet()){
+										String value = PostBody.get(key);
+										if(PostBody.get(key).contains("{{page}}")){
+											value = value.replaceAll("\\{\\{page\\}\\}", "" + nums);
+										}
+										PostBody_map.put(key, value);
 									}
-									PostBody_map.put(key, value);
+									PostBody_list.add(PostBody_map);
+									nums += add;
 								}
-								PostBody_list.add(PostBody_map);
-								nums += add;
 							}
 						}else{
 							spider_url_list.add(entry_url);
@@ -491,19 +493,21 @@ public class SpiderWorker {
 							spider_url_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
 							nums += add;
 						}
-						nums = min;
-						//再替换postbody
-						while(nums <= max){
-							Map<String,String> PostBody_map = new HashMap<String,String>();
-							for(String key : PostBody.keySet()){
-								String value = PostBody.get(key);
-								if(PostBody.get(key).contains("{{page}}")){
-									value = value.replaceAll("\\{\\{page\\}\\}", "" + nums);
+						if(PostBody != null && PostBody.size() > 0){
+							nums = min;
+							//再替换postbody
+							while(nums <= max){
+								Map<String,String> PostBody_map = new HashMap<String,String>();
+								for(String key : PostBody.keySet()){
+									String value = PostBody.get(key);
+									if(PostBody.get(key).contains("{{page}}")){
+										value = value.replaceAll("\\{\\{page\\}\\}", "" + nums);
+									}
+									PostBody_map.put(key, value);
 								}
-								PostBody_map.put(key, value);
+								PostBody_list.add(PostBody_map);
+								nums += add;
 							}
-							PostBody_list.add(PostBody_map);
-							nums += add;
 						}
 					}else{
 						spider_url_list.add(entry_url);
