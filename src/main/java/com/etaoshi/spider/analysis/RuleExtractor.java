@@ -148,7 +148,8 @@ public class RuleExtractor {
 	 * @return
 	 */
 	public static int[] ExtractPage(String page){
-		String[] min_max_add = page.split("|");
+		page = TextHelper.FormatCRLF(page).replaceAll(" ", "").replace("\r", "").replace("\n", "");
+		String[] min_max_add = page.split("\\|");
 		String[] min_max = min_max_add[0].split("-");
 		
 		int[] result = new int[3];
