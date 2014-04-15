@@ -315,6 +315,7 @@ public class SpiderWorker {
         				//解析method和postparams
         				String Method = "GET";
         				Map<String,String> PostBody = null;
+        				String PostBodyString = null;
         				if(rulelist.containsKey(EntryRule.method) && 
         						rulelist.get(EntryRule.method)
         								  .replaceAll("\r", "").replaceAll("\n", "").trim()
@@ -332,6 +333,7 @@ public class SpiderWorker {
         							postbody = postbody.replaceAll("\\{\\{array\\." + rulekey + "\\}\\}", indbList.get(rulekey).get(i));
         						}
         						
+        						PostBodyString = postbody;
         						PostBody = RuleExtractor.ExtractPostParams(postbody);
         					}
         				}
@@ -342,6 +344,7 @@ public class SpiderWorker {
 						//做page分页参数解析并替换
         				List<String> spider_url_list = new ArrayList<String>();
         				List<Map<String,String>> PostBody_list = new ArrayList<Map<String,String>>();
+        				List<String> PostBodyString_list = new ArrayList<String>();
 						if(rulelist.containsKey(EntryRule.page) && !rulelist.get(EntryRule.page).isEmpty()){
 							int[] page_array = RuleExtractor.ExtractPage(rulelist.get(EntryRule.page));
 							//先替换url
@@ -369,6 +372,14 @@ public class SpiderWorker {
 									nums += add;
 								}
 							}
+							if(PostBodyString != null && PostBodyString.trim().length() > 0){
+								nums = min;
+								//再替换postbody
+								while(nums <= max){
+									PostBodyString_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+									nums += add;
+								}
+							}
 						}else{
 							spider_url_list.add(entry_url);
 							PostBody_list.add(PostBody);
@@ -381,7 +392,11 @@ public class SpiderWorker {
 	        				String entry_content = null;
 	        				if(Method.equals("POST")){
 	        					try {
-	    							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
+	        						if(PostBody_list.get(ii).size() > 0){
+	        							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
+	        						}else{
+	        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
+	        						}
 								} catch (HttpException e) {
 									logger.error(e.getStackTrace());
 								} catch (IOException e) {
@@ -458,6 +473,7 @@ public class SpiderWorker {
         			//解析method和postparams
         			String Method = "GET";
         			Map<String,String> PostBody = null;
+        			String PostBodyString = null;
     				if(rulelist.containsKey(EntryRule.method) && 
     						rulelist.get(EntryRule.method)
     								  .replaceAll("\r", "").replaceAll("\n", "").trim()
@@ -471,6 +487,7 @@ public class SpiderWorker {
     							postbody = postbody.replaceAll("\\{\\{request\\." + rulekey + "\\}\\}", request.get(rulekey));
     						}
     						
+    						PostBodyString = postbody;
     						PostBody = RuleExtractor.ExtractPostParams(postbody);
     					}
     				}
@@ -482,6 +499,7 @@ public class SpiderWorker {
 					//做page分页参数解析并替换
     				List<String> spider_url_list = new ArrayList<String>();
     				List<Map<String,String>> PostBody_list = new ArrayList<Map<String,String>>();
+    				List<String> PostBodyString_list = new ArrayList<String>();
 					if(rulelist.containsKey(EntryRule.page) && !rulelist.get(EntryRule.page).isEmpty()){
 						int[] page_array = RuleExtractor.ExtractPage(rulelist.get(EntryRule.page));
 						//先替换url
@@ -509,6 +527,14 @@ public class SpiderWorker {
 								nums += add;
 							}
 						}
+						if(PostBodyString != null && PostBodyString.trim().length() > 0){
+							nums = min;
+							//再替换postbody
+							while(nums <= max){
+								PostBodyString_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+								nums += add;
+							}
+						}
 					}else{
 						spider_url_list.add(entry_url);
 						PostBody_list.add(PostBody);
@@ -521,7 +547,11 @@ public class SpiderWorker {
 	    				String entry_content = null;
 	    				if(Method.equals("POST")){
 	    					try {
-	    						entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
+        						if(PostBody_list.get(ii).size() > 0){
+        							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
+        						}else{
+        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
+        						}
 							} catch (HttpException e) {
 								logger.error(e.getStackTrace());
 							} catch (IOException e) {

@@ -81,10 +81,12 @@
 						style="display: inline-block; width: 40px; margin-top: 2px;">修改</a>
 				</td>
 				<td>
+				#if($spiderTask.getJobRunMap($item.id) == false)
 					<a href='javascript:void(0);'
 						onclick="if(confirm('确定操作？')){$.OpenDialogHelper.openModalDlg('spiderbyssid?ssid=$item.id',700,0)}"
 						class="btn_style_a"
 						style="display: inline-block; width: 40px; margin-top: 2px;">抓取</a>
+				#end
 				</td>
 			</tr>
 		#end

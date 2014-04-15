@@ -233,7 +233,10 @@ public class regtemplate {
 				if(entryrule_map.containsKey(EntryRule.postparams) 
 						&& !entryrule_map.get(EntryRule.postparams).isEmpty())
 					postparams = RuleExtractor.ExtractPostParams(entryrule_map.get(EntryRule.postparams));
-				content = HttpDown.postdown(url, header, postparams);
+				if(postparams.size() > 0)
+					content = HttpDown.postdown(url, header, postparams);
+				else
+					content = HttpDown.postbodydown(url, header, entryrule_map.get(EntryRule.postparams));
 			}else{
 				content = HttpDown.getdown(url, header);
 			}

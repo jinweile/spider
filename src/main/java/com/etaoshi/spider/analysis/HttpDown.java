@@ -4,10 +4,19 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
 /**
  * 
@@ -79,6 +88,37 @@ public class HttpDown {
 		byte[] responseBody = content.getBytes(method.getResponseCharSet());
 		//转码
 		result = new String(responseBody, charset);
+
+		return result;
+	}
+	
+	/**
+	 * 下载内容(post非表单元素)
+	 * 
+	 * @param url
+	 * @param header
+	 * @param postbody
+	 * @return
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	public static String postbodydown(String url, Map<String, String> header, String postbody) throws ClientProtocolException, IOException{
+		String result = "";
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpPost method = new HttpPost(url);
+		if(header != null)
+			for(String key : header.keySet()){
+				method.addHeader(key, header.get(key));
+			}
+
+        StringEntity se = new StringEntity(postbody,"UTF-8");
+        method.setEntity(se);
+		
+        HttpResponse response = client.execute(method);
+		if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
+			System.out.println("no http down");
+		}
+		result = EntityUtils.toString(response.getEntity(),"UTF-8");
 
 		return result;
 	}

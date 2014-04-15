@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.etaoshi.spider.analysis.IResultInDb;
 import com.etaoshi.spider.analysis.SpiderWorker;
 import com.etaoshi.spider.comm.SpringContext;
+import com.etaoshi.spider.job.SpiderQueueTask;
 import com.etaoshi.spider.job.SpiderTask;
 import com.etaoshi.spider.model.*;
 import com.etaoshi.spider.service.intf.*;
@@ -86,7 +87,7 @@ public class joblist {
 			@RequestParam(required = true) Integer ssid,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		SourceSpider ss = ssservice.Find(ssid);
+		/*SourceSpider ss = ssservice.Find(ssid);
 		List<SpiderRegTemplate> srtlist = srtservice.FindByTemplateid(ss.getTemplateid());
 		Map<Integer, String> scmap = scservice.FindAllMap();
 		
@@ -107,14 +108,35 @@ public class joblist {
 						}
 					}
 		});
-		
-		Map map = new HashMap();
 		map.put("sqls", sqls);
 		map.put("sqle_map", sqle_map);
-
-		ModelAndView model = new ModelAndView();
+		map.put("msg", "启动了此项抓取！");
+	
 		model.setViewName("spiderbyssid");
-		model.addAllObjects(map);
+		model.addAllObjects(map);*/
+		
+    	//如果作业在运行，则跳过
+		ModelAndView model = new ModelAndView();
+		Map map = new HashMap();
+    	if(!SpiderTask.getJobRunMap(ssid)){
+			List<String> sqls = new ArrayList<String>();
+			Map<String, SQLException> sqle_map = new HashMap<String, SQLException>();
+			
+			SpiderQueueTask qtask = new SpiderQueueTask(ssid,sqle_map,sqls);
+			qtask.start();
+			
+			//map.put("sqls", sqls);
+			//map.put("sqle_map", sqle_map);
+			map.put("msg", "启动了此项抓取！");
+	
+			model.setViewName("spiderbyssid");
+			model.addAllObjects(map);
+    	}else{
+    		map.put("msg", "此抓取项目正在运行，请结束后再设置");
+	
+			model.setViewName("spiderbyssid");
+			model.addAllObjects(map);
+    	}
 		return model;
 	}
 	

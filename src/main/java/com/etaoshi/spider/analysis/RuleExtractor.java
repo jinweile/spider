@@ -59,7 +59,7 @@ public class RuleExtractor {
 	 */
 	public static Map<String,String> ExtractHeader(String header){
 		Map<String,String> map = new HashMap<String,String>();
-		String reg = "\\(\\((?<key>.+?)=(?<value>.+)\\)\\)";
+		String reg = "\\(\\((?<key>.+?)=(?<value>.+?)\\)\\)";
 		String content = TextHelper.FormatCRLF(header).replaceAll(" ", "").replace("\r", "").replace("\n", "");
 		Pattern p = Pattern.compile("(?s)" + reg, Pattern.CASE_INSENSITIVE);
 		Matcher matchers = p.matcher(content);

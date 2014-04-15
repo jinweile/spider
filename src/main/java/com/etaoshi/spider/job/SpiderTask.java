@@ -76,8 +76,10 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 	 * @param key
 	 * @param value
 	 */
-	private static synchronized void setJobRunMap(int key, boolean value){
-		jobrun_map.put(key, value);
+	public static void setJobRunMap(int key, boolean value){
+		synchronized(jobrun_map){
+			jobrun_map.put(key, value);
+		}
 	}
 	
 	/**
@@ -86,8 +88,10 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 	 * @return
 	 */
 	public static boolean getJobRunMap(int key){
-		if(jobrun_map.containsKey(key))
-			return jobrun_map.get(key);
+		synchronized(jobrun_map){
+			if(jobrun_map.containsKey(key))
+				return jobrun_map.get(key);
+		}
 		
 		return false;
 	}
@@ -189,6 +193,9 @@ public class SpiderTask implements InitializingBean, ServletContextAware {
 	     */ 
 	    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 	    	int sourcespiderid = jobExecutionContext.getJobDetail().getJobDataMap().getIntValue("sourcespiderid");
+	    	//如果作业在运行，则跳过
+	    	if(getJobRunMap(sourcespiderid))
+	    		return;
 	    	setJobRunMap(sourcespiderid, true);
 			SourceSpider ss = null;
 			try {

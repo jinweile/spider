@@ -5,13 +5,17 @@
 <title>抓取结果信息</title>
 </head>
 <body>
-操作的sql:<br/>
-#foreach($item in $sqls)
-	$item <br/>
-	#if($sqle_map.containsKey($item))
-		异常信息：$sqle_map.get($key).getMessage() <br/>
+#if($sqls)
+	操作的sql:<br/>
+	#foreach($item in $sqls)
+		$item <br/>
+		#if($sqle_map.containsKey($item))
+			异常信息：$sqle_map.get($key).getMessage() <br/>
+		#end
+		<br/>
 	#end
-	<br/>
+#else
+	$msg
 #end
 </body>
 </html>
