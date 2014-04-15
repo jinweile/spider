@@ -54,24 +54,31 @@ public class SpiderQueueTask extends Thread {
 			srtlist = srtservice.FindByTemplateid(ss.getTemplateid());
 			scmap = scservice.FindAllMap();
 		} catch (SQLException e1) {
+			SpiderTask.setJobRunMap(sourcespiderid, false);
 			return;
 		}
 		
-		String[] result = SpiderWorker.SpiderEntry(ss.getSpiderentryrule());
-		
-		SpiderWorker.RecursiveExtractTemplateInDb(ss.getId(), result[0], result[1], 0, ss.getTemplateid(), srtlist, scmap, null, 
-				new IResultInDb(){
-					public void Insert(List<String> insert_sql_list) {
-						sqls.addAll(insert_sql_list);
-						for(String sql : insert_sql_list){
-							try {
-								scservice.InsertIntoDataModel(sql);
-							} catch (SQLException e) {
-								sqle_map.put(sql, e);
+		try{
+			String[] result = SpiderWorker.SpiderEntry(ss.getSpiderentryrule());
+			
+			SpiderWorker.RecursiveExtractTemplateInDb(ss.getId(), result[0], result[1], 0, ss.getTemplateid(), srtlist, scmap, null, 
+					new IResultInDb(){
+						public void Insert(List<String> insert_sql_list) {
+							sqls.addAll(insert_sql_list);
+							for(String sql : insert_sql_list){
+								try {
+									scservice.InsertIntoDataModel(sql);
+								} catch (SQLException e) {
+									sqle_map.put(sql, e);
+								}
 							}
 						}
-					}
-		});
+			});
+		}catch(Exception e){
+			
+		}
+		
+		SpiderTask.setJobRunMap(sourcespiderid, false);
 		
 	}
 	
