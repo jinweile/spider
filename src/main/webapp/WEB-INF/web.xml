@@ -12,7 +12,7 @@
   </servlet-mapping>
   <filter>
     <filter-name>Spring character encoding filter</filter-name>
-    <filter-class>
+    	<filter-class>
             org.springframework.web.filter.CharacterEncodingFilter
         </filter-class>
     <init-param>
