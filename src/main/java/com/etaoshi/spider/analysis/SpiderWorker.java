@@ -376,13 +376,14 @@ public class SpiderWorker {
 								nums = min;
 								//再替换postbody
 								while(nums <= max){
-									PostBodyString_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+									PostBodyString_list.add(PostBodyString.replaceAll("\\{\\{page\\}\\}", "" + nums));
 									nums += add;
 								}
 							}
 						}else{
 							spider_url_list.add(entry_url);
 							PostBody_list.add(PostBody);
+							PostBodyString_list.add(PostBodyString);
 						}
         				
         				//抓取内容
@@ -531,13 +532,14 @@ public class SpiderWorker {
 							nums = min;
 							//再替换postbody
 							while(nums <= max){
-								PostBodyString_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+								PostBodyString_list.add(PostBodyString.replaceAll("\\{\\{page\\}\\}", "" + nums));
 								nums += add;
 							}
 						}
 					}else{
 						spider_url_list.add(entry_url);
 						PostBody_list.add(PostBody);
+						PostBodyString_list.add(PostBodyString);
 					}
         			
     				//抓取内容
