@@ -35,7 +35,8 @@
             #end
             </tr>
 			#foreach($item in $list)
-			<tr>
+			<tr onmouseover="c=this.style.backgroundColor;this.style.backgroundColor='#ccffaa';"
+				onmouseout="this.style.backgroundColor=c;">
 				#foreach($key in $item.keySet())
 				    #if($key == "sourcespiderid")
 				<td class="title">
