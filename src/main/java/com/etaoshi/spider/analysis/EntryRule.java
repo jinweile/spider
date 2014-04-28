@@ -76,7 +76,14 @@ public enum EntryRule {
 	 * 1-100|1
 	 * 用来替换?page={{page}}
 	 */
-	page(10);
+	page(10),
+	
+	/**
+	 * 唯一键列名，格式:
+	 * [uniquekey]
+	 * request.ctid|array.ctname
+	 */
+	uniquekey(11);
 
 	private EntryRule(int entryrule) {
 		this.entryrule = entryrule;

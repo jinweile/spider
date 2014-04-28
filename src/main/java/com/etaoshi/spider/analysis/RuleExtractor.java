@@ -1,9 +1,11 @@
 package com.etaoshi.spider.analysis;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -158,6 +160,33 @@ public class RuleExtractor {
 		result[2] = Integer.parseInt(min_max_add[1]);
 		
 		return result;
+	}
+	
+	/**
+	 * 解析唯一键列名
+	 * @param ukey
+	 * @return
+	 */
+	public static EntryRuleKeyList ExtractUniqueKey(String ukey){
+		EntryRuleKeyList rulekeylist = new EntryRuleKeyList();
+		
+		if(ukey != null){
+			ukey = TextHelper.FormatCRLF(ukey).replaceAll(" ", "").replace("\r", "").replace("\n", "");
+			String[] ukey_array = ukey.split("\\|");
+			for(String key : ukey_array){
+				if(key.startsWith("array.")){
+					String add_key = key.replace("array.", "");
+					if(!rulekeylist.array.contains(add_key))
+						rulekeylist.array.add(add_key);
+				}else if(key.startsWith("request.")){
+					String add_key = key.replace("request.", "");
+					if(!rulekeylist.request.contains(add_key))
+						rulekeylist.request.add(add_key);
+				}
+			}
+		}
+		
+		return rulekeylist;
 	}
 	
 }
