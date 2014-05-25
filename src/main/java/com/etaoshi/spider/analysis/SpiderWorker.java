@@ -479,25 +479,35 @@ public class SpiderWorker {
 	        				String spider_url = ToolsUtils.CombineUrl(url, spider_url_list.get(ii));
 	        				String entry_content = null;
 	        				if(Method.equals("POST")){
-	        					try {
-	        						if(PostBody_list.get(ii).size() > 0){
-	        							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
-	        						}else{
-	        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
-	        						}
-								} catch (HttpException e) {
-									logger.error(e.getStackTrace());
-								} catch (IOException e) {
-									logger.error(e.getStackTrace());
-								}
+	        					int spider_nums = 0;
+	        					while(spider_nums < 2){
+		        					try {
+		        						if(PostBody_list.get(ii).size() > 0){
+		        							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
+		        						}else{
+		        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
+		        						}
+		        						break;
+									} catch (HttpException e) {
+										logger.error(e.getStackTrace());
+									} catch (IOException e) {
+										logger.error(e.getStackTrace());
+									}
+		        					spider_nums++;
+	        					}
 	        				}else{
-	        					try {
-									entry_content = HttpDown.getdown(spider_url, headers);
-								} catch (HttpException e) {
-									logger.error(e.getStackTrace());
-								} catch (IOException e) {
-									logger.error(e.getStackTrace());
-								}
+	        					int spider_nums = 0;
+	        					while(spider_nums < 2){
+		        					try {
+										entry_content = HttpDown.getdown(spider_url, headers);
+										break;
+									} catch (HttpException e) {
+										logger.error(e.getStackTrace());
+									} catch (IOException e) {
+										logger.error(e.getStackTrace());
+									}
+		        					spider_nums++;
+	        					}
 	        				}
 	        				
 	        				//进入一次递归
@@ -635,25 +645,35 @@ public class SpiderWorker {
 	    				String spider_url = ToolsUtils.CombineUrl(url, spider_url_list.get(ii));
 	    				String entry_content = null;
 	    				if(Method.equals("POST")){
-	    					try {
-        						if(PostBody_list.get(ii).size() > 0){
-        							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
-        						}else{
-        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
-        						}
-							} catch (HttpException e) {
-								logger.error(e.getStackTrace());
-							} catch (IOException e) {
-								logger.error(e.getStackTrace());
-							}
+        					int spider_nums = 0;
+        					while(spider_nums < 2){
+		    					try {
+	        						if(PostBody_list.get(ii).size() > 0){
+	        							entry_content = HttpDown.postdown(spider_url, headers, PostBody_list.get(ii));
+	        						}else{
+	        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
+	        						}
+	        						break;
+								} catch (HttpException e) {
+									logger.error(e.getStackTrace());
+								} catch (IOException e) {
+									logger.error(e.getStackTrace());
+								}
+		    					spider_nums++;
+        					}
 	    				}else{
-	    					try {
-	    						entry_content = HttpDown.getdown(spider_url, headers);
-							} catch (HttpException e) {
-								logger.error(e.getStackTrace());
-							} catch (IOException e) {
-								logger.error(e.getStackTrace());
-							}
+        					int spider_nums = 0;
+        					while(spider_nums < 2){
+		    					try {
+		    						entry_content = HttpDown.getdown(spider_url, headers);
+		    						break;
+								} catch (HttpException e) {
+									logger.error(e.getStackTrace());
+								} catch (IOException e) {
+									logger.error(e.getStackTrace());
+								}
+		    					spider_nums++;
+        					}
 	    				}
 	    				
         				//进入一次递归
@@ -799,20 +819,30 @@ public class SpiderWorker {
 		//抓取数据
 		String entry_content = null;
 		if(Method.equals("POST")){
-			try {
-				entry_content = HttpDown.postdown(url, headers, PostBody);
-			} catch (HttpException e) {
-				logger.error(e.getStackTrace());
-			} catch (IOException e) {
-				logger.error(e.getStackTrace());
+			int spider_nums = 0;
+			while(spider_nums < 2){
+				try {
+					entry_content = HttpDown.postdown(url, headers, PostBody);
+					break;
+				} catch (HttpException e) {
+					logger.error(e.getStackTrace());
+				} catch (IOException e) {
+					logger.error(e.getStackTrace());
+				}
+				spider_nums++;
 			}
 		}else{
-			try {
-				entry_content = HttpDown.getdown(url, headers);
-			} catch (HttpException e) {
-				logger.error(e.getStackTrace());
-			} catch (IOException e) {
-				logger.error(e.getStackTrace());
+			int spider_nums = 0;
+			while(spider_nums < 2){
+				try {
+					entry_content = HttpDown.getdown(url, headers);
+					break;
+				} catch (HttpException e) {
+					logger.error(e.getStackTrace());
+				} catch (IOException e) {
+					logger.error(e.getStackTrace());
+				}
+				spider_nums++;
 			}
 		}
 		

@@ -26,7 +26,7 @@ public class CookieHelper {
 	/**
 	 * 登陆cookie名称
 	 */
-	private static final String cookiename = "companyregsys";
+	private static final String cookiename = "etaoshispider";
 
 	/**
 	 * 加cookie
@@ -44,7 +44,7 @@ public class CookieHelper {
 			String cookieName, String cookieValue, boolean isencode)
 			throws Exception {
 		if (isencode)
-			cookieValue = DESedeCoder.encrypt(cookieValue, key);
+			cookieValue = ToolsUtils.urlEncode(DESedeCoder.encrypt(cookieValue, key));
 		Cookie cookie = new Cookie(cookieName, cookieValue);
 		cookie.setPath("/");
 		cookie.setMaxAge(expiry);
@@ -63,9 +63,11 @@ public class CookieHelper {
 			String cookieName, boolean isdecode) throws Exception {
 		String value = null;
 		Cookie[] cookies = request.getCookies();
+		if (cookies == null)
+			return null;
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(cookieName)) {
-				value = isdecode ? DESedeCoder.decrypt(cookie.getValue(), key)
+				value = isdecode ? DESedeCoder.decrypt(ToolsUtils.urlDecode(cookie.getValue()), key)
 						: cookie.getValue();
 				break;
 			}
@@ -85,12 +87,11 @@ public class CookieHelper {
 	 */
 	public static void Login(HttpServletResponse response, int expiry,
 			String UserName, String UserID, Date LoginTime) throws Exception {
-		String logdate = ToolsUtils.formatDate(LoginTime, "yyyyMMddHHmm");
+		String logdate = ToolsUtils.formatDate(LoginTime, "yyyy-MM-dd HH:mm");
 		Date dd = new Date();
-		logdate = ToolsUtils.urlEncode(logdate);
 		String cvalue = "uname=" + UserName + ";uid=" + UserID + ";logintime="
 				+ logdate;
-		String encvalue = DESedeCoder.encrypt(cvalue, key);
+		String encvalue = ToolsUtils.urlEncode(DESedeCoder.encrypt(cvalue, key));
 		Cookie cookie = new Cookie(cookiename, encvalue);
 		cookie.setPath("/");
 		cookie.setMaxAge(expiry);
@@ -129,8 +130,8 @@ public class CookieHelper {
 		if (cookies == null)
 			return null;
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("companyregsys")) {
-				String encvalue = cookie.getValue();
+			if (cookie.getName().equals(cookiename)) {
+				String encvalue = ToolsUtils.urlDecode(cookie.getValue());
 				String cvalue = DESedeCoder.decrypt(encvalue, key);
 				String regexstr = "^uname=(.+?);uid=(.+?);logintime=(.+?)$";
 				Pattern p = Pattern.compile(regexstr, Pattern.CASE_INSENSITIVE);
@@ -138,7 +139,7 @@ public class CookieHelper {
 				if (matchers.find()) {
 					String UserName = matchers.group(1);
 					String UserID = matchers.group(2);
-					String LoginTime = ToolsUtils.urlDecode(matchers.group(3));
+					String LoginTime = matchers.group(3);
 					return new String[] { UserName, UserID, LoginTime };
 				}
 				break;

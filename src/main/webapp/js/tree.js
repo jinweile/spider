@@ -138,13 +138,13 @@ MzTreeView.prototype.setStyle = function()
     style +="\
     DIV.MzTreeView DIV\
     {\
-      height: 24px;"+
-      (this.navigator=="firefox" ? "line-height: 24px;" : "" ) +
+      height: 16px;"+
+      (this.navigator=="firefox" ? "line-height: 16px;" : "" ) +
       (this.navigator=="netscape" ? "" : "overflow: hidden;" ) +"\
     }\
     DIV.MzTreeView DIV SPAN\
     {\
-      vertical-align: middle; font-size: 21px; height: 24px; color: #D4D0C8; cursor: default;\
+      vertical-align: middle; font-size: 21px; height: 16px; color: #D4D0C8; cursor: default;\
     }\
     DIV.MzTreeView DIV SPAN.pm\
     {\
@@ -318,7 +318,7 @@ MzTreeView.prototype.word2image = function(word)
       case "6" : img = "L0"; break;
     }
     if(img!="")
-      str += "<IMG align='absMiddle' src='"+ this.icons[img].src +"' height='24'>";
+      str += "<IMG align='absMiddle' src='"+ this.icons[img].src +"' height='16'>";
   }
   return str;
 }

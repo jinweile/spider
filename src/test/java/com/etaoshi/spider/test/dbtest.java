@@ -70,10 +70,13 @@ public class dbtest {
 						}
 					}
 		});*/
-
+		String result = ToolsUtils.deUnicode("\u0061\u006c\u0065\u0078\u0061\u5168\u7403\u7f51\u7ad9\u6392\u540d");
+		System.out.println(result);
+		String conetnt = ToolsUtils.enUnicode("alexa全球网站排名");
+		System.out.println(conetnt);
 	}
 	
-	@Test
+	//@Test
 	public void split(){
 		//RuleExtractor.ExtractPage("1-2|1");
 		
@@ -81,7 +84,7 @@ public class dbtest {
 		System.out.println(ss.replaceAll("\\s", ""));
 	}
 
-	@Test
+	//@Test
 	public void path() {
 		/*try {  
             // FileSystems.getDefault().getPath(first, more)  
@@ -142,7 +145,7 @@ public class dbtest {
         }*/
 	}
 	
-	@Test
+	//@Test
 	public void httptest() throws HttpException, IOException{
 		String url = "http://www.doodii.com/ajaxpro/Controls_Index_RestCommend,App_Web_restcommend.ascx.9db0856a.ashx";
 		
