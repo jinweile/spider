@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>用户登录</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link href="css/main_style.css"type="text/css" rel="stylesheet" />
+	<link href="css/style.css"type="text/css" rel="stylesheet" />
+    <script language="javascript" type="text/javascript">
+        function reloadimg() {
+            var img = document.getElementById('regCode');
+            img.src = 'chkcode.jpg?' + Math.random();
+        }
+        function checkall() {
+            var logonid = document.getElementById("userid").value;
+            var pwd = document.getElementById("pwd").value;
+            var chkcode = document.getElementById("txtCheckCode").value;
+
+            var span1 = document.getElementById("Span1");
+            var span2 = document.getElementById("Span2");
+            var span3 = document.getElementById("Span3");
+
+            var flag = true;
+            if (logonid.length == 0) {
+                span1.innerHTML = "登录名！";
+                flag = false;
+            } else {
+                span1.innerHTML = "";
+            }
+            if (pwd.length == 0) {
+                span2.innerHTML = "密码！";
+                flag = false;
+            } else {
+                span2.innerHTML = "";
+            }
+            if (chkcode.length == 0) {
+                span3.innerHTML = "验证码！";
+                flag = false;
+            } else {
+                span3.innerHTML = "";
+            }
+            if(flag)
+                this.form.submit();
+        }
+    </script>
+</head>
+<body  id="main_content">
+	#set($url="")
+	#if($returnurl) #set($url="?returnurl="+$returnurl) #end
+    <form method="post" action="login$url">
+    <div  id="login">
+    <div class="all"><img alt="" src="images/login_top.jpg" /></div>
+		<div class="all"><img alt=""  src="images/login_t_bord.jpg" /></div>
+    <div class="content">
+		<ul class="input_area">
+			<li>
+				<span class="title">登录名：</span>
+				<span class="input_area">
+                    <input type="text" id="userid" name="uname" /></span>
+				<span class="announce" id="Span1" style="color:Red;">
+                    
+                </span>
+			</li>
+			<li>
+				<span class="title">密&nbsp;&nbsp;码：</span>
+				<span class="input_area">
+                    <input type="password" id="pwd" name="pwd" /></span>
+				<span class="announce" id="Span2" style="color:Red;">
+                    
+                </span>
+			</li>
+			<li>
+					<span class="title">验证码：</span>
+					<span class="input_area">
+					    <input type="text" maxlength="4" id="txtCheckCode" style="width:80px;" name="chkcode"/>
+                    </span>
+                    <img src="chkcode.jpg" width="60" height="22" id="regCode" alt="看不清验证码,请单击图片刷新" onclick="javascript:reloadimg();" style="cursor:hand;" border="0" />
+                    <span class="announce" id="Span3" style="color:Red;">
+                        
+                    </span>
+				</li>
+			
+			<li style="text-align:center; text-indent:0; height:45px;">
+			  <input type="image" name="btnLogin" id="btnLogin" onclick="checkall();" onmouseover="this.style.marginTop='-1px';" onmousedown="this.style.marginTop='1px';" onmouseout="this.style.marginTop='0';" onmouseup="this.style.marginTop='0';" src="images/btn_login.jpg"   style="border-width:0px;border:0; width:135px; height:38px;"/>
+			 </li>
+			 <li style="text-align:center; text-indent:0;">
+                 <font color="red">#if($msg) $msg #end</font>
+			 </li>
+		</ul>
+	</div>
+	<div class="all"><img alt="" src="images/login_body_bottom.jpg" /></div>
+	<div class="all body_c"><span class="focus"><span id="lbMsgInfo" style="color:Red;"></span></span></div>
+	<div class="all"><img alt="" src="images/login_bottom.jpg" /></div>
+    </div>
+    </form>
+</body>
+</html>
