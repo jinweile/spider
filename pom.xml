@@ -20,12 +20,6 @@
 		</dependency>
 		
 		<dependency>
-		  <groupId>com.sun</groupId>
-		  <artifactId>rt</artifactId>
-		  <version>1.7</version>
-		</dependency>
-		
-		<dependency>
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-api</artifactId>
 		  <version>1.6.2</version>
