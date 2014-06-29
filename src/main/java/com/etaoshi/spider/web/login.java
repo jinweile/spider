@@ -26,8 +26,8 @@ import com.etaoshi.spider.comm.CookieHelper;
 import com.etaoshi.spider.comm.ToolsUtils;
 import com.etaoshi.spider.model.SpiderColumn;
 import com.etaoshi.spider.model.enumctype;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.thoughtworks.xstream.XStream;
 
 @Controller
@@ -87,9 +87,10 @@ public class login {
 		String randomStr = RandomStringUtils.randomAlphabetic(4).toLowerCase();
 		CookieHelper.addCookie(response, 5 * 50, "chkcode", randomStr, true);
 		BufferedImage bi = new Captcha().generate(60, 25, randomStr).getImage();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
-		encoder.encode(bi);
+		//此处无需做jpeg编码
+		//ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		//JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
+		//encoder.encode(bi);
 		response.setContentType("image/jpeg");
 		ImageIO.write(bi, "JPEG", response.getOutputStream());
 	}
