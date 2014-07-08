@@ -337,9 +337,9 @@ public class SpiderWorker {
         		EntryRuleKeyList rulekeylist = RuleExtractor.ExtractEntryRuleKey(entry_url_rule);
         		//解析response规则
         		EntryRuleKeyList responsekeylist = RuleExtractor.ExtractEntryRuleKey(rulelist.containsKey(EntryRule.response) ? rulelist.get(EntryRule.response) : "");
-             //解析header规则
+                //解析header规则
         		EntryRuleKeyList headerkeylist = RuleExtractor.ExtractEntryRuleKey(rulelist.containsKey(EntryRule.header) ? rulelist.get(EntryRule.header) : "");
-             //解析postparams规则
+                //解析postparams规则
         		EntryRuleKeyList postparamskeylist = RuleExtractor.ExtractEntryRuleKey(rulelist.containsKey(EntryRule.postparams) ? rulelist.get(EntryRule.postparams) : "");
         		//如果有array则需要循环进入
         		if(rulekeylist.array.size() > 0 || responsekeylist.array.size() > 0 || headerkeylist.array.size() > 0 || postparamskeylist.array.size() > 0){
