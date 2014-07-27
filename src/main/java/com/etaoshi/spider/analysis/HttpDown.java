@@ -43,6 +43,7 @@ public class HttpDown {
 			}
 		int statusCode = client.executeMethod(method);
 		if(statusCode != HttpStatus.SC_OK){
+			method.releaseConnection();
 			return null;
 		}
 		String content = method.getResponseBodyAsString();
@@ -53,6 +54,7 @@ public class HttpDown {
 		//转码
 		result = new String(responseBody, charset);
 		
+		method.releaseConnection();
 		return result;
 	}
 	
@@ -79,6 +81,7 @@ public class HttpDown {
 			}
 		int statusCode = client.executeMethod(method);
 		if(statusCode != HttpStatus.SC_OK){
+			method.releaseConnection();
 			return null;
 		}
 		String content = method.getResponseBodyAsString();
@@ -89,6 +92,7 @@ public class HttpDown {
 		//转码
 		result = new String(responseBody, charset);
 
+		method.releaseConnection();
 		return result;
 	}
 	
@@ -140,6 +144,7 @@ public class HttpDown {
 				String charset = matchers.group(1).toUpperCase();
 				try {
 					currentCharset = Charset.forName(charset);
+					return currentCharset;
 				} catch (Exception ex) { }
 			}
 		}
