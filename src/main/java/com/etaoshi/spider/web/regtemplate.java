@@ -226,19 +226,25 @@ public class regtemplate {
 		//根据入口规则下载页面
 		String content = ""; 
 		if(type == 1){
-			if(entryrule_map.containsKey(EntryRule.method) 
-					&& entryrule_map.get(EntryRule.method).equalsIgnoreCase("POST")){
-				//解析post信息
-				Map<String, String> postparams = null;
-				if(entryrule_map.containsKey(EntryRule.postparams) 
-						&& !entryrule_map.get(EntryRule.postparams).isEmpty())
-					postparams = RuleExtractor.ExtractPostParams(entryrule_map.get(EntryRule.postparams));
-				if(postparams.size() > 0)
-					content = HttpDown.postdown(url, header, postparams);
-				else
-					content = HttpDown.postbodydown(url, header, entryrule_map.get(EntryRule.postparams));
-			}else{
-				content = HttpDown.getdown(url, header);
+			try{
+				if(entryrule_map.containsKey(EntryRule.method) 
+						&& entryrule_map.get(EntryRule.method).equalsIgnoreCase("POST")){
+					//解析post信息
+					Map<String, String> postparams = null;
+					if(entryrule_map.containsKey(EntryRule.postparams) 
+							&& !entryrule_map.get(EntryRule.postparams).isEmpty())
+						postparams = RuleExtractor.ExtractPostParams(entryrule_map.get(EntryRule.postparams));
+					if(postparams.size() > 0)
+						content = HttpDown.postdown(url, header, postparams);
+					else
+						content = HttpDown.postbodydown(url, header, entryrule_map.get(EntryRule.postparams));
+				}else{
+					content = HttpDown.getdown(url, header);
+				}
+			}catch(Exception ex){
+				temp.setMsg(ToolsUtils.GetException(ex, System.lineSeparator()));
+				response.getWriter().write(JSONHelper.serialize(temp));
+				return;
 			}
 		}else{
 			content = url;

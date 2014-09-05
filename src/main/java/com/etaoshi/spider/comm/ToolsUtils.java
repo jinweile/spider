@@ -317,5 +317,23 @@ public class ToolsUtils {
 		}
 		return outBuffer.toString();
 	}
+	
+	/**
+	 * 根据异常获取异常详细信息
+	 * 
+	 * @param e
+	 * @return
+	 */
+	public static <T extends Exception> String GetException(T e,String line) {
+		StringBuffer bs = new StringBuffer();
+		StackTraceElement[] a = e.getStackTrace();
+		bs.append(line + " 信息: " + e.fillInStackTrace() + "");
+		for (int i = 0; i < a.length; i++) {
+			bs.append(line + "    在" + a[i].getClassName() + "类("
+					+ a[i].getFileName() + ":" + a[i].getLineNumber() + "行,"
+					+ a[i].getMethodName() + "()方法)");
+		}
+		return bs.toString();
+	}
 
 }
