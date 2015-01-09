@@ -17,7 +17,7 @@
 		</property>
 	</bean>
 	<!-- 通过属性文件注入属性End -->
-	<!-- DHCP方式配置数据源Start -->
+	<!-- DBCP方式配置数据源Start -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${db.driverClassName}" />
 		<property name="url" value="${db.url}" />
@@ -47,7 +47,7 @@
         <!-- 1000 * 60 * 30  连接在池中保持空闲而不被空闲连接回收器线程-->
         <property name="minEvictableIdleTimeMillis" value="10000"/>
 	</bean>
-	<!-- DHCP方式配置数据源End -->
+	<!-- DBCP方式配置数据源End -->
 	<!-- c3p0 jdbc pool Start -->
 	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 	    <property name="driverClass" value="${db.driverClassName}" />
