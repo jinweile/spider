@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.etaoshi.spider.comm.JSONHelper;
 import com.etaoshi.spider.comm.SpringContext;
 import com.etaoshi.spider.model.Source;
 import com.etaoshi.spider.service.intf.ISourceService;
@@ -121,6 +122,25 @@ public class index {
 		String js = "<script>window.parent.location = window.parent.location;</script>";
 		response.setContentType("text/html;charset=UTF-8");
 		response.getOutputStream().write(js.getBytes());
+	}
+	
+	/**
+	 * 显示统计源列表
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/index/json", method=RequestMethod.GET)
+	public void Index_Json(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Source obj = new Source();
+		obj.setId(1);
+		obj.setIsused(true);
+		obj.setName(null);
+		obj.setRemark(null);
+		
+		response.getWriter().write(JSONHelper.serialize(obj));
 	}
 	
 }
