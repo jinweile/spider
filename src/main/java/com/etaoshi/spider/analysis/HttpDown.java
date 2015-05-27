@@ -1,5 +1,6 @@
 package com.etaoshi.spider.analysis;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +19,8 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import com.etaoshi.spider.comm.ToolsUtils;
+
 /**
  * 
  * @author jinweile
@@ -30,13 +33,12 @@ public class HttpDown {
 	 * @param url
 	 * @param header
 	 * @return
-	 * @throws IOException 
-	 * @throws HttpException 
+	 * @throws Exception 
 	 */
-	public static String getdown(String url, Map<String, String> header) throws HttpException, IOException{
+	public static String getdown(String url, Map<String, String> header) throws Exception{
 		String result = "";
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod(url);
+		GetMethod method = new GetMethod(createurl(url));
 		if(header != null)
 			for(String key : header.keySet()){
 				method.addRequestHeader(key, header.get(key));
@@ -56,6 +58,25 @@ public class HttpDown {
 		
 		method.releaseConnection();
 		return result;
+	}
+	
+	private static String createurl(String oldurl) throws Exception{
+		String[] urls = oldurl.split("\\?");
+		if(urls.length == 1) return oldurl;
+		Map<String,String> params = new HashMap<String,String>();
+		String[] params_array = urls[1].split("&");
+		for(String keyvalue : params_array){
+			String[] kv_array = keyvalue.split("=");
+			params.put(kv_array[0], kv_array.length > 1 ? kv_array[1] : "");
+		}
+		String newurl = urls[0] + "?";
+		int i = 0;
+		for(String key : params.keySet()){
+			if(i > 0) newurl += "&";
+			newurl = newurl + key + "=" + ToolsUtils.urlEncode(ToolsUtils.urlDecode(params.get(key)));
+			i++;
+		}
+		return newurl;
 	}
 	
 	/**

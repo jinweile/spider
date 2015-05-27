@@ -361,6 +361,10 @@ public class SpiderWorker {
         					entry_url = entry_url.replaceAll("\\{\\{array\\." + rulekey + "\\}\\}", indbList.get(rulekey).get(i));
         				}
         				
+        				if(entry_url.contains("SeasonCode=067 VELA")){
+        					int ss = 2;
+        				}
+        				
         				//开始拼装response数据作为下一层request
         				Map<String,String> response = null;
         				if(rulelist.containsKey(EntryRule.response)){
@@ -440,7 +444,13 @@ public class SpiderWorker {
 							int add = page_array[2];
 							int nums = min;
 							while(nums <= max){
-								spider_url_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+								if(entry_url.contains("{{page}}")) {
+									spider_url_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+								} else if (entry_url.contains("{{pagestart}}") && entry_url.contains("{{pageend}}")) {
+									spider_url_list.add(entry_url
+																		.replaceAll("\\{\\{pagestart\\}\\}", "" + nums)
+																		.replaceAll("\\{\\{pageend\\}\\}", "" + (nums + add - 1)));
+								}
 								nums += add;
 							}
 							if(PostBody != null && PostBody.size() > 0){
@@ -452,6 +462,9 @@ public class SpiderWorker {
 										String value = PostBody.get(key);
 										if(PostBody.get(key).contains("{{page}}")){
 											value = value.replaceAll("\\{\\{page\\}\\}", "" + nums);
+										} else if (PostBody.get(key).contains("{{pagestart}}") && PostBody.get(key).contains("{{pageend}}")) {
+											value = value.replaceAll("\\{\\{pagestart\\}\\}", "" + nums)
+																	.replaceAll("\\{\\{pageend\\}\\}", "" + (nums + add - 1));
 										}
 										PostBody_map.put(key, value);
 									}
@@ -463,7 +476,13 @@ public class SpiderWorker {
 								nums = min;
 								//再替换postbody
 								while(nums <= max){
-									PostBodyString_list.add(PostBodyString.replaceAll("\\{\\{page\\}\\}", "" + nums));
+									if(PostBodyString.contains("{{page}}")){
+										PostBodyString_list.add(PostBodyString.replaceAll("\\{\\{page\\}\\}", "" + nums));
+									} else if (PostBodyString.contains("{{pagestart}}") && PostBodyString.contains("{{pageend}}")) {
+										PostBodyString_list.add(PostBodyString
+																					.replaceAll("\\{\\{pagestart\\}\\}", "" + nums)
+																					.replaceAll("\\{\\{pageend\\}\\}", "" + (nums + add - 1)));
+									}
 									nums += add;
 								}
 							}
@@ -499,15 +518,20 @@ public class SpiderWorker {
 	        					int spider_nums = 0;
 	        					while(spider_nums < 2){
 		        					try {
+		                				if(spider_url.contains("SeasonCode=067 VELA")){
+		                					int ss = 2;
+		                				}
 										entry_content = HttpDown.getdown(spider_url, headers);
 										break;
-									} catch (HttpException e) {
-										logger.error(e.getStackTrace());
-									} catch (IOException e) {
+									} catch (Exception e) {
 										logger.error(e.getStackTrace());
 									}
 		        					spider_nums++;
 	        					}
+	        				}
+	        				
+	        				if(spider_url.contains("SeasonCode=076")){
+	        					int dsds = 0;
 	        				}
 	        				
 	        				//进入一次递归
@@ -606,7 +630,13 @@ public class SpiderWorker {
 						int add = page_array[2];
 						int nums = min;
 						while(nums <= max){
-							spider_url_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+							if(entry_url.contains("{{page}}")){
+								spider_url_list.add(entry_url.replaceAll("\\{\\{page\\}\\}", "" + nums));
+							} else if (entry_url.contains("{{pagestart}}") && entry_url.contains("{{pageend}}")) {
+								spider_url_list.add(entry_url
+																.replaceAll("\\{\\{pagestart\\}\\}", "" + nums)
+																.replaceAll("\\{\\{pageend\\}\\}", "" + (nums + add - 1)));
+							}
 							nums += add;
 						}
 						if(PostBody != null && PostBody.size() > 0){
@@ -618,6 +648,9 @@ public class SpiderWorker {
 									String value = PostBody.get(key);
 									if(PostBody.get(key).contains("{{page}}")){
 										value = value.replaceAll("\\{\\{page\\}\\}", "" + nums);
+									} else if (PostBody.get(key).contains("{{pagestart}}") && PostBody.get(key).contains("{{pageend}}")) {
+										value = value.replaceAll("\\{\\{pagestart\\}\\}", "" + nums)
+																.replaceAll("\\{\\{pageend\\}\\}", "" + (nums + add - 1));
 									}
 									PostBody_map.put(key, value);
 								}
@@ -629,7 +662,13 @@ public class SpiderWorker {
 							nums = min;
 							//再替换postbody
 							while(nums <= max){
-								PostBodyString_list.add(PostBodyString.replaceAll("\\{\\{page\\}\\}", "" + nums));
+								if(PostBodyString.contains("{{page}}")){
+									PostBodyString_list.add(PostBodyString.replaceAll("\\{\\{page\\}\\}", "" + nums));
+								} else if (PostBodyString.contains("{{pagestart}}") && PostBodyString.contains("{{pageend}}")) {
+									PostBodyString_list.add(PostBodyString
+																				.replaceAll("\\{\\{pagestart\\}\\}", "" + nums)
+																				.replaceAll("\\{\\{pageend\\}\\}", "" + (nums + add - 1)));
+								}
 								nums += add;
 							}
 						}
@@ -667,14 +706,16 @@ public class SpiderWorker {
 		    					try {
 		    						entry_content = HttpDown.getdown(spider_url, headers);
 		    						break;
-								} catch (HttpException e) {
-									logger.error(e.getStackTrace());
-								} catch (IOException e) {
+								} catch (Exception e) {
 									logger.error(e.getStackTrace());
 								}
 		    					spider_nums++;
         					}
 	    				}
+	    				
+        				if(spider_url.contains("SeasonCode=076")){
+        					int dsds = 0;
+        				}
 	    				
         				//进入一次递归
         				if(entry_content != null && !entry_content.isEmpty()){
@@ -739,16 +780,20 @@ public class SpiderWorker {
                 		
                 		//进入一次递归
         				if(entry_content != null && !entry_content.isEmpty())
-        					RecursiveExtractTemplateInDb(
-	        						sourcespiderid
-	        						,url
-	        						,entry_content
-	        						,template.getId()
-	        						,tid
-	        						,templatelist
-	        						,columnmap
-	        						,response
-	        						,Insert);
+        					try{
+	        					RecursiveExtractTemplateInDb(
+		        						sourcespiderid
+		        						,url
+		        						,entry_content
+		        						,template.getId()
+		        						,tid
+		        						,templatelist
+		        						,columnmap
+		        						,response
+		        						,Insert);
+        					}catch(Exception e){
+        						
+        					}
                 	}
                 }
                 //否则通过request进入
@@ -767,18 +812,23 @@ public class SpiderWorker {
                 				response.put(rulekey, request.get(rulekey));
                 		}
                 	}
+
                 	//进入下一层递归
     				if(entry_content != null && !entry_content.isEmpty())
-    					RecursiveExtractTemplateInDb(
-        						sourcespiderid
-        						,url
-        						,entry_content
-        						,template.getId()
-        						,tid
-        						,templatelist
-        						,columnmap
-        						,response
-        						,Insert);
+    					try{
+	    					RecursiveExtractTemplateInDb(
+	        						sourcespiderid
+	        						,url
+	        						,entry_content
+	        						,template.getId()
+	        						,tid
+	        						,templatelist
+	        						,columnmap
+	        						,response
+	        						,Insert);
+    					}catch(Exception e){
+    						
+    					}
                 }
                 
         	}
@@ -837,9 +887,7 @@ public class SpiderWorker {
 				try {
 					entry_content = HttpDown.getdown(url, headers);
 					break;
-				} catch (HttpException e) {
-					logger.error(e.getStackTrace());
-				} catch (IOException e) {
+				} catch (Exception e) {
 					logger.error(e.getStackTrace());
 				}
 				spider_nums++;
