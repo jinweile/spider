@@ -66,6 +66,7 @@ public class SpiderQueueTask extends Thread {
 						public void Insert(List<String> insert_sql_list) {
 							sqls.addAll(insert_sql_list);
 							for(String sql : insert_sql_list){
+								System.out.println(sql);
 								try {
 									scservice.InsertIntoDataModel(sql);
 								} catch (SQLException e) {

@@ -195,7 +195,7 @@ public class SpiderWorker {
                 		int ulen = ukey_list.array.size();
                 		int ui = 0;
                 		for(String ukey : ukey_list.array){
-                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(ukey)).replaceAll("\\s", "")) + "'";
+                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(ukey))) + "'";
                 			if(ui < ulen - 1){
                 				sql += " and ";
                 			}
@@ -207,7 +207,7 @@ public class SpiderWorker {
                 			if(ui == 0){
                 				sql += sql.endsWith("(") ? "" : " and ";
                 			}
-                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(ukey)).replaceAll("\\s", "")) + "'";
+                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(ukey))) + "'";
                 			if(ui < ulen - 1){
                 				sql += " and ";
                 			}
@@ -245,7 +245,7 @@ public class SpiderWorker {
                 		if(i == 0){
                 			sql += sql.endsWith("(") ? "" : ",";
                 		}
-                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(key)).replaceAll("\\s", "")) + "'";
+                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(key))) + "'";
                 		if(i < len - 1)
                 			sql += ",";
                 		i++;
@@ -256,68 +256,68 @@ public class SpiderWorker {
                 		if(i == 0){
                 			sql += sql.endsWith("(") ? "" : ",";
                 		}
-                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(requestkey)).replaceAll("\\s", "")) + "'";
+                		sql += "'" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(requestkey))) + "'";
                 		if(i < len - 1)
                 			sql += ",";
                 		i++;
                 	}
                 	sql += sql.endsWith("(") ? "" : ",";
                 	sql += "" + sourcespiderid;
-                	sql += ",getdate())";
+                	sql += ",getdate()) end";
                 	
                 	//开始根据唯一键update
-                	if(ukey_list.array.size() > 0 || ukey_list.request.size() > 0){
-                		sql += " end else begin ";
-                		sql += " update " + tablename + " set ";
-                		int inlen = map.size();
-                		int ii = 0;
-                		for(String key : map.keySet()){
-                			if(!ukey_list.array.contains(key)){
-                				if(!sql.endsWith("set "))
-                					sql += ",";
-	                			sql += key + " = " + "'" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(key)).replaceAll("\\s", "")) + "'";
-                			}
-                			ii++;
-                		}
-                		inlen = requestfields.size();
-                		ii = 0;
-                		for(String requestkey : requestfields){
-                			if(!ukey_list.request.contains(requestkey)){
-                				if(!sql.endsWith("set "))
-                					sql += ",";
-	                			sql += requestkey + " = " + "'" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(requestkey)).replaceAll("\\s", "")) + "'";
-                			}
-                			ii++;
-                		}
-                		if(!sql.endsWith("set "))
-                			sql += ",";
-                		sql += " spidertime = getdate() ";
-                		sql += " where (";
-                		int ulen = ukey_list.array.size();
-                		int ui = 0;
-                		for(String ukey : ukey_list.array){
-                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(ukey)).replaceAll("\\s", "")) + "'";
-                			if(ui < ulen - 1){
-                				sql += " and ";
-                			}
-                			ui++;
-                		}
-                		ulen = ukey_list.request.size();
-                		ui = 0;
-                		for(String ukey : ukey_list.request){
-                			if(ui == 0){
-                				sql += sql.endsWith("(") ? "" : " and ";
-                			}
-                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(ukey)).replaceAll("\\s", "")) + "'";
-                			if(ui < ulen - 1){
-                				sql += " and ";
-                			}
-                			ui++;
-                		}
-                		sql += sql.endsWith("(") ? "" : " and ";
-                		sql += " sourcespiderid = " + sourcespiderid + ")";
-                		sql += " end ";
-                	}
+//                	if(ukey_list.array.size() > 0 || ukey_list.request.size() > 0){
+//                		sql += " end else begin ";
+//                		sql += " update " + tablename + " set ";
+//                		int inlen = map.size();
+//                		int ii = 0;
+//                		for(String key : map.keySet()){
+//                			if(!ukey_list.array.contains(key)){
+//                				if(!sql.endsWith("set "))
+//                					sql += ",";
+//	                			sql += key + " = " + "'" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(key))) + "'";
+//                			}
+//                			ii++;
+//                		}
+//                		inlen = requestfields.size();
+//                		ii = 0;
+//                		for(String requestkey : requestfields){
+//                			if(!ukey_list.request.contains(requestkey)){
+//                				if(!sql.endsWith("set "))
+//                					sql += ",";
+//	                			sql += requestkey + " = " + "'" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(requestkey))) + "'";
+//                			}
+//                			ii++;
+//                		}
+//                		if(!sql.endsWith("set "))
+//                			sql += ",";
+//                		sql += " spidertime = getdate() ";
+//                		sql += " where (";
+//                		int ulen = ukey_list.array.size();
+//                		int ui = 0;
+//                		for(String ukey : ukey_list.array){
+//                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(map.get(ukey))) + "'";
+//                			if(ui < ulen - 1){
+//                				sql += " and ";
+//                			}
+//                			ui++;
+//                		}
+//                		ulen = ukey_list.request.size();
+//                		ui = 0;
+//                		for(String ukey : ukey_list.request){
+//                			if(ui == 0){
+//                				sql += sql.endsWith("(") ? "" : " and ";
+//                			}
+//                			sql += ukey + " = '" + SQLParamHelper.Replace(TextHelper.TagClean(request.get(ukey))) + "'";
+//                			if(ui < ulen - 1){
+//                				sql += " and ";
+//                			}
+//                			ui++;
+//                		}
+//                		sql += sql.endsWith("(") ? "" : " and ";
+//                		sql += " sourcespiderid = " + sourcespiderid + ")";
+//                		sql += " end ";
+//                	}
                 	
                 	sql_list.add(sql);
                 }
