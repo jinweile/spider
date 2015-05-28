@@ -507,9 +507,7 @@ public class SpiderWorker {
 		        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
 		        						}
 		        						break;
-									} catch (HttpException e) {
-										logger.error(e.getStackTrace());
-									} catch (IOException e) {
+									} catch (Exception e) {
 										logger.error(e.getStackTrace());
 									}
 		        					spider_nums++;
@@ -693,9 +691,7 @@ public class SpiderWorker {
 	        							entry_content = HttpDown.postbodydown(spider_url, headers, PostBodyString_list.get(ii));
 	        						}
 	        						break;
-								} catch (HttpException e) {
-									logger.error(e.getStackTrace());
-								} catch (IOException e) {
+								} catch (Exception e) {
 									logger.error(e.getStackTrace());
 								}
 		    					spider_nums++;
@@ -874,9 +870,7 @@ public class SpiderWorker {
 				try {
 					entry_content = HttpDown.postdown(url, headers, PostBody);
 					break;
-				} catch (HttpException e) {
-					logger.error(e.getStackTrace());
-				} catch (IOException e) {
+				} catch (Exception e) {
 					logger.error(e.getStackTrace());
 				}
 				spider_nums++;
