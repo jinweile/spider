@@ -85,20 +85,19 @@ public class HttpDown {
 	 * @param header
 	 * @param postparams
 	 * @return
-	 * @throws IOException 
-	 * @throws HttpException 
+	 * @throws Exception 
 	 */
-	public static String postdown(String url, Map<String, String> header, Map<String, String> postparams) throws HttpException, IOException{
+	public static String postdown(String url, Map<String, String> header, Map<String, String> postparams) throws Exception{
 		String result = "";
 		HttpClient client = new HttpClient();
 		PostMethod method = new PostMethod(url);
 		if(header != null)
 			for(String key : header.keySet()){
-				method.addRequestHeader(key, header.get(key));
+				method.addRequestHeader(key, ToolsUtils.urlDecode(header.get(key)));
 			}
 		if(postparams != null)
 			for(String key : postparams.keySet()){
-				method.addParameter(key, postparams.get(key));
+				method.addParameter(key, ToolsUtils.urlDecode(postparams.get(key)));
 			}
 		int statusCode = client.executeMethod(method);
 		if(statusCode != HttpStatus.SC_OK){
@@ -124,16 +123,15 @@ public class HttpDown {
 	 * @param header
 	 * @param postbody
 	 * @return
-	 * @throws IOException 
-	 * @throws ClientProtocolException 
+	 * @throws Exception 
 	 */
-	public static String postbodydown(String url, Map<String, String> header, String postbody) throws ClientProtocolException, IOException{
+	public static String postbodydown(String url, Map<String, String> header, String postbody) throws Exception{
 		String result = "";
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpPost method = new HttpPost(url);
 		if(header != null)
 			for(String key : header.keySet()){
-				method.addHeader(key, header.get(key));
+				method.addHeader(key, ToolsUtils.urlDecode(header.get(key)));
 			}
 
         StringEntity se = new StringEntity(postbody,"UTF-8");
