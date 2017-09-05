@@ -516,9 +516,6 @@ public class SpiderWorker {
 	        					int spider_nums = 0;
 	        					while(spider_nums < 2){
 		        					try {
-		                				if(spider_url.contains("SeasonCode=067 VELA")){
-		                					int ss = 2;
-		                				}
 										entry_content = HttpDown.getdown(spider_url, headers);
 										break;
 									} catch (Exception e) {
